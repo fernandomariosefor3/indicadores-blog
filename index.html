@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores Educacionais - Blog e Calculadora</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fbfd;
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #0d4a7e, #1a73e8);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #e0e6ed;
+        }
+        .tab {
+            padding: 14px 28px;
+            cursor: pointer;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-bottom: none;
+            margin-right: 8px;
+            border-radius: 6px 6px 0 0;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+        }
+        .tab:hover {
+            background-color: #e2e8f0;
+        }
+        .tab.active {
+            background-color: white;
+            color: #1a73e8;
+            border-top: 3px solid #1a73e8;
+            border-bottom: 3px solid white;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 25px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 8px 8px 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1, h2, h3 {
+            color: #0d4a7e;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .post {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .post h3 {
+            margin-top: 0;
+            color: #1a73e8;
+        }
+        .post-meta {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .info-box {
+            background-color: #ebf4ff;
+            border-left: 4px solid #1a73e8;
+            padding: 18px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        button {
+            background: linear-gradient(to right, #1a73e8, #0d4a7e);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(to right, #0d4a7e, #1a73e8);
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
+            border-radius: 8px;
+            border: 1px solid #c3dafe;
+        }
+        .result h3 {
+            margin-top: 0;
+            color: #0d4a7e;
+        }
+        .historical-data {
+            margin-top: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #1a73e8;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        tr:hover {
+            background-color: #edf2f7;
+        }
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: #f1f5f9;
+            color: #4a5568;
+            margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .highlight {
+            background-color: #fff8e1;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indicadores Educacionais</h1>
+        <p>Blog informativo e calculadora para gestores escolares</p>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="openTab('blog')">Blog Educacional</div>
+            <div class="tab" onclick="openTab('calculadora')">Calculadora de Indicadores</div>
+            <div class="tab" onclick="openTab('consulta')">Consulta por INEP</div>
+        </div>
+
+        <!-- Blog Educacional -->
+        <div id="blog" class="tab-content active">
+            <h2>Artigos sobre Indicadores Educacionais</h2>
+
+            <div class="post">
+                <div class="post-meta">Publicado em 15 de março de 2025</div>
+                <h3>O que é o IDEB e por que ele importa?</h3>
+                <p>O Índice de Desenvolvimento da Educação Básica (IDEB) é o principal indicador de qualidade da educação brasileira. Criado em 2007 pelo INEP, o IDEB combina dois elementos fundamentais: o <span class="highlight">desempenho dos alunos</span> em avaliações padronizadas (como SAEB e Prova Brasil) e o <span class="highlight">fluxo escolar</span> (medido pela taxa de aprovação).</p>
+                <p>A meta nacional é que o Brasil alcance IDEB 6.0 no Ensino Fundamental e 5.2 no Ensino Médio até 2027. Escolas com IDEB acima de 5.0 são consideradas de qualidade satisfatória segundo os parâmetros internacionais.</p>
+            </div>
+
+            <div class="post">
+                <div class="post-meta">Publicado em 28 de fevereiro de 2025</div>
+                <h3>Entendendo o SAEB: Sistema de Avaliação da Educação Básica</h3>
+                <p>O SAEB é aplicado a cada dois anos pelo INEP e avalia estudantes do 5º e 9º anos do Ensino Fundamental e da 3ª série do Ensino Médio. As provas são de Língua Portuguesa e Matemática, e os resultados são usados para:</p>
+                <ul>
+                    <li>Diagnosticar a qualidade da educação em diferentes regiões</li>
+                    <li>Elaborar políticas públicas educacionais</li>
+                    <li>Calcular o IDEB de escolas, municípios, estados e país</li>
+                </ul>
+                <p>Os resultados do SAEB não identificam individualmente os alunos, mas permitem análises coletivas detalhadas.</p>
+            </div>
+
+            <div class="post">
+                <div class="post-meta">Publicado em 10 de fevereiro de 2025</div>
+                <h3>SPAECE: O sistema cearense de avaliação que virou referência nacional</h3>
+                <p>O Sistema Permanente de Avaliação da Educação Básica do Ceará (SPAECE) é aplicado anualmente desde 1992 e avalia estudantes do 2º ao 9º ano do Ensino Fundamental e do Ensino Médio. Diferentemente do SAEB, o SPAECE:</p>
+                <ul>
+                    <li>É aplicado todos os anos (não a cada dois)</li>
+                    <li>Avalia todas as séries do Ensino Fundamental</li>
+                    <li>Fornece resultados individualizados para cada escola</li>
+                    <li>Permite acompanhamento longitudinal do desempenho</li>
+                </ul>
+                <p>O sucesso do SPAECE inspirou outros estados a criarem seus próprios sistemas de avaliação estadual.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Como usar este blog?</h3>
+                <p>Navegue pelos artigos para entender os conceitos por trás dos principais indicadores educacionais. Depois, utilize as ferramentas interativas nas abas "Calculadora" e "Consulta por INEP" para aplicar esses conhecimentos na gestão da sua escola.</p>
+            </div>
+        </div>
+
+        <!-- Calculadora de Indicadores -->
+        <div id="calculadora" class="tab-content">
+            <h2>Calculadora de Indicadores Educacionais</h2>
+            <p>Preencha os dados da sua escola para estimar os principais indicadores:</p>
+
+            <div class="form-group">
+                <label for="anoRef">Ano de Referência:</label>
+                <input type="number" id="anoRef" min="2000" max="2030" value="2024">
+            </div>
+
+            <div class="form-group">
+                <label for="totalAlunos">Total de Alunos Matriculados:</label>
+                <input type="number" id="totalAlunos" min="1" placeholder="Ex: 420">
+            </div>
+
+            <div class="form-group">
+                <label for="aprovados">Número de Alunos Aprovados:</label>
+                <input type="number" id="aprovados" min="0" placeholder="Ex: 380">
+            </div>
+
+            <div class="form-group">
+                <label for="mediaLP">Média em Língua Portuguesa (escala 0-100):</label>
+                <input type="number" id="mediaLP" min="0" max="100" step="0.1" placeholder="Ex: 68.5">
+            </div>
+
+            <div class="form-group">
+                <label for="mediaMat">Média em Matemática (escala 0-100):</label>
+                <input type="number" id="mediaMat" min="0" max="100" step="0.1" placeholder="Ex: 62.3">
+            </div>
+
+            <button onclick="calcularIndicadores()">Calcular Indicadores</button>
+
+            <div id="resultadoCalculo" class="result" style="display: none;">
+                <h3>Resultados Estimados</h3>
+                <p><strong>Taxa de Aprovação:</strong> <span id="taxaAprov"></span>%</p>
+                <p><strong>Média Geral:</strong> <span id="mediaGeral"></span></p>
+                <p><strong>IDEB Estimado:</strong> <span id="idebEstimado"></span></p>
+                <p><strong>SPAECE Estimado:</strong> <span id="spaeceEstimado"></span></p>
+                <p><strong>SAEB Estimado:</strong> <span id="saebEstimado"></span></p>
+                <div class="info-box">
+                    <p><em>Nota: Estes são cálculos estimados para fins educacionais. Os indicadores oficiais utilizam metodologias complexas do INEP e Secretarias de Educação.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consulta por INEP -->
+        <div id="consulta" class="tab-content">
+            <h2>Consulta Histórica por Código INEP</h2>
+            <p>Digite o código INEP da sua escola (7 dígitos) para visualizar os indicadores históricos:</p>
+
+            <div class="form-group">
+                <label for="codigoInep">Código INEP:</label>
+                <input type="text" id="codigoInep" placeholder="Ex: 25038190" maxlength="8">
+                <small style="color: #718096;">O código INEP geralmente tem 8 dígitos (ex: 25038190)</small>
+            </div>
+
+            <button onclick="buscarHistoricoInep()">Buscar Dados Históricos</button>
+
+            <div id="dadosHistoricos" class="historical-data" style="display: none;">
+                <h3>Histórico da Escola (INEP: <span id="codigoExibido"></span>)</h3>
+                <table id="tabelaHistorico">
+                    <thead>
+                        <tr>
+                            <th>Ano</th>
+                            <th>IDEB</th>
+                            <th>SAEB - LP</th>
+                            <th>SAEB - Mat</th>
+                            <th>Taxa Aprovação (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabela">
+                        <!-- Dados serão carregados aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Indicadores Educacionais</strong> - Plataforma educacional para gestores escolares</p>
+        <p>© 2025 Todos os direitos reservados | Ferramenta para fins educacionais e demonstrativos</p>
+        <p><em>Esta plataforma não está afiliada ao INEP/MEC. Os dados de exemplo são simulados para demonstração.</em></p>
+    </footer>
+
+    <script>
+        // Dados simulados para demonstração (baseados em escolas reais do Ceará)
+        const historicoEscolas = {
+            "25038190": [
+                { ano: 2023, ideb: 6.2, saeb_lp: 65.8, saeb_mat: 63.2, taxa_aprov: 94.5 },
+                { ano: 2021, ideb: 5.9, saeb_lp: 63.5, saeb_mat: 61.0, taxa_aprov: 92.8 },
+                { ano: 2019, ideb: 5.7, saeb_lp: 61.2, saeb_mat: 59.5, taxa_aprov: 91.3 }
+            ],
+            "25042751": [
+                { ano: 2023, ideb: 5.8, saeb_lp: 62.1, saeb_mat: 60.3, taxa_aprov: 90.2 },
+                { ano: 2021, ideb: 5.5, saeb_lp: 60.0, saeb_mat: 58.2, taxa_aprov: 88.7 },
+                { ano: 2019, ideb: 5.3, saeb_lp: 58.5, saeb_mat: 56.8, taxa_aprov: 87.1 }
+            ],
+            "25061234": [
+                { ano: 2023, ideb: 4.9, saeb_lp: 55.3, saeb_mat: 53.1, taxa_aprov: 82.4 },
+                { ano: 2021, ideb: 4.7, saeb_lp: 53.8, saeb_mat: 51.9, taxa_aprov: 80.6 }
+            ]
+        };
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function calcularIndicadores() {
+            const total = parseFloat(document.getElementById('totalAlunos').value);
+            const aprov = parseFloat(document.getElementById('aprovados').value);
+            const lp = parseFloat(document.getElementById('mediaLP').value);
+            const mat = parseFloat(document.getElementById('mediaMat').value);
+
+            if (isNaN(total) || isNaN(aprov) || isNaN(lp) || isNaN(mat)) {
+                alert('Por favor, preencha todos os campos com valores numéricos válidos.');
+                return;
+            }
+
+            if (aprov > total) {
+                alert('O número de alunos aprovados não pode ser maior que o total de matriculados.');
+                return;
+            }
+
+            const taxaAprov = (aprov / total) * 100;
+            const mediaGeral = (lp + mat) / 2;
+            // Fórmula simplificada do IDEB: (Taxa de Aprovação em decimal) * (Média Padrão / 10)
+            // Considerando que a média padrão do SAEB varia de 0 a 100, convertemos para escala 0-10
+            const idebEstimado = (taxaAprov / 100) * (mediaGeral / 10);
+            
+            document.getElementById('taxaAprov').textContent = taxaAprov.toFixed(2);
+            document.getElementById('mediaGeral').textContent = mediaGeral.toFixed(2);
+            document.getElementById('idebEstimado').textContent = idebEstimado.toFixed(2);
+            document.getElementById('spaeceEstimado').textContent = mediaGeral.toFixed(2);
+            document.getElementById('saebEstimado').textContent = mediaGeral.toFixed(2);
+            document.getElementById('resultadoCalculo').style.display = 'block';
+        }
+
+        function buscarHistoricoInep() {
+            const codigo = document.getElementById('codigoInep').value.trim();
+            
+            if (codigo.length < 7 || isNaN(codigo)) {
+                alert('Por favor, insira um código INEP válido com pelo menos 7 dígitos numéricos.');
+                return;
+            }
+
+            // Busca aproximada (para demonstração)
+            let dadosEncontrados = null;
+            let codigoEncontrado = null;
+            
+            for (const [cod, dados] of Object.entries(historicoEscolas)) {
+                if (cod.startsWith(codigo) || codigo.startsWith(cod)) {
+                    dadosEncontrados = dados;
+                    codigoEncontrado = cod;
+                    break;
+                }
+            }
+
+            if (dadosEncontrados) {
+                document.getElementById('codigoExibido').textContent = codigoEncontrado;
+                const corpoTabela = document.getElementById('corpoTabela');
+                corpoTabela.innerHTML = '';
+                
+                dadosEncontrados.forEach(registro => {
+                    const row = corpoTabela.insertRow();
+                    row.innerHTML = `
+                        <td>${registro.ano}</td>
+                        <td>${registro.ideb.toFixed(1)}</td>
+                        <td>${registro.saeb_lp.toFixed(1)}</td>
+                        <td>${registro.saeb_mat.toFixed(1)}</td>
+                        <td>${registro.taxa_aprov.toFixed(1)}</td>
+                    `;
+                });
+                
+                document.getElementById('dadosHistoricos').style.display = 'block';
+            } else {
+                alert(`Código INEP não encontrado. Tente um destes códigos de exemplo:\n• 25038190\n• 25042751\n• 25061234`);
+                document.getElementById('dadosHistoricos').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
