@@ -251,14 +251,6 @@
             display: none;
         }
         
-        .comparison-chart {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
         .chart-container {
             height: 300px;
             margin: 20px 0;
@@ -438,6 +430,20 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
+        .nivel-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin: 2px;
+        }
+        
+        .nivel-abaixo { background: #fee2e2; color: #dc2626; }
+        .nivel-basico { background: #fef3c7; color: #d97706; }
+        .nivel-adequado { background: #d1fae5; color: #059669; }
+        .nivel-desejavel { background: #dbeafe; color: #1d4ed8; }
+        
         @media (max-width: 768px) {
             .tabs {
                 flex-direction: column;
@@ -492,14 +498,15 @@
         <div class="tabs">
             <div class="tab active" onclick="openTab('avaliacoes')">Avaliações Externas</div>
             <div class="tab" onclick="openTab('ideb')">Calculadora IDEB</div>
-            <div class="tab" onclick="openTab('saeb')">Calculadora SAEB</div>
-            <div class="tab" onclick="openTab('spaece')">Calculadora SPAECE</div>
-            <div class="tab" onclick="openTab('idep')">Calculadora IDEP</div>
-            <div class="tab" onclick="openTab('historico')">Histórico da Escola</div>
-            <div class="tab" onclick="openTab('promocao')">Preditor de Promoção</div>
+            <div class="tab" onclick="openTab('saeb')">Histórico SAEB</div>
+            <div class="tab" onclick="openTab('spaece')">Histórico SPAECE</div>
+            <div class="tab" onclick="openTab('previsao')">Previsão IDEB</div>
+            <div class="tab" onclick="openTab('historico')">Histórico IDEB</div>
+            <div class="tab" onclick="openTab('fluxo')">Calculadora Fluxo</div>
+            <div class="tab" onclick="openTab('promocao')">Promoção Sem Titulação</div>
         </div>
 
-        <!-- Aba 1: Avaliações Externas - MELHORADA -->
+        <!-- Aba 1: Avaliações Externas -->
         <div id="avaliacoes" class="tab-content active">
             <h2>📊 Avaliações Externas na Educação Básica</h2>
             
@@ -524,20 +531,8 @@
                     </div>
                 </div>
                 
-                <!-- Prova Brasil -->
-                <div class="timeline-item right">
-                    <div class="timeline-content">
-                        <h3>Prova Brasil</h3>
-                        <h4>Componente do SAEB</h4>
-                        <p><strong>Abrangência:</strong> Censitária para escolas públicas urbanas</p>
-                        <p><strong>Requisito:</strong> Mínimo de 20 alunos por turma</p>
-                        <p><strong>Resultados:</strong> Divulgação por escola</p>
-                        <p><strong>Importância:</strong> Base para metas do IDEB escolar</p>
-                    </div>
-                </div>
-                
                 <!-- SPAECE -->
-                <div class="timeline-item left">
+                <div class="timeline-item right">
                     <div class="timeline-content">
                         <h3>SPAECE</h3>
                         <h4>Sistema Permanente de Avaliação da Educação Básica do Ceará</h4>
@@ -551,7 +546,7 @@
                 </div>
                 
                 <!-- IDEB -->
-                <div class="timeline-item right">
+                <div class="timeline-item left">
                     <div class="timeline-content">
                         <h3>IDEB</h3>
                         <h4>Índice de Desenvolvimento da Educação Básica</h4>
@@ -615,27 +610,23 @@
             </div>
         </div>
 
-        <!-- Aba 2: Calculadora IDEB - MANTIDA -->
+        <!-- Aba 2: Calculadora IDEB -->
         <div id="ideb" class="tab-content">
             <h2>📈 Calculadora IDEB</h2>
-            <!-- Conteúdo existente mantido -->
-        </div>
-
-        <!-- Aba 3: Calculadora SAEB - REFEITA -->
-        <div id="saeb" class="tab-content">
-            <h2>📊 Calculadora SAEB</h2>
             
             <div class="info-box">
-                <h4>🎯 Sobre o SAEB</h4>
-                <p>O SAEB avalia o desempenho dos estudantes em Língua Portuguesa e Matemática usando a Teoria de Resposta ao Item (TRI).</p>
+                <h4>🎯 Fórmula do IDEB</h4>
+                <p>IDEB = (Nota Padronizada SAEB) × (Taxa de Aprovação)</p>
+                <p><strong>Nota Padronizada:</strong> Média das proficiências em Língua Portuguesa e Matemática convertida para escala 0-10</p>
+                <p><strong>Taxa de Aprovação:</strong> Percentual de alunos aprovados no ano letivo</p>
             </div>
 
             <div class="calculator-section">
-                <h3>Calculadora de Proficiência Média SAEB</h3>
+                <h3>Calculadora do IDEB</h3>
                 
                 <div class="form-group">
-                    <label for="saebEtapa">Etapa de Ensino:</label>
-                    <select id="saebEtapa">
+                    <label for="idebEtapa">Etapa de Ensino:</label>
+                    <select id="idebEtapa">
                         <option value="5ano">5º Ano do Ensino Fundamental</option>
                         <option value="9ano">9º Ano do Ensino Fundamental</option>
                         <option value="3em">3ª Série do Ensino Médio</option>
@@ -643,568 +634,324 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="saebNotas">Notas dos Alunos (separadas por vírgula):</label>
-                    <textarea id="saebNotas" placeholder="Ex: 325, 278, 410, 352, 295, 320, 380, 340" rows="4"></textarea>
-                    <small>Insira as notas na escala SAEB (0-500 pontos)</small>
+                    <label for="idebMediaLP">Proficiência Média em Língua Portuguesa (SAEB):</label>
+                    <input type="number" id="idebMediaLP" min="0" max="500" placeholder="Ex: 275">
                 </div>
 
-                <button onclick="calcularSAEB()">Calcular Proficiência SAEB</button>
+                <div class="form-group">
+                    <label for="idebMediaMT">Proficiência Média em Matemática (SAEB):</label>
+                    <input type="number" id="idebMediaMT" min="0" max="500" placeholder="Ex: 280">
+                </div>
 
-                <div id="resultadoSAEB" class="prediction-result">
-                    <h4>📋 Resultados SAEB</h4>
+                <div class="form-group">
+                    <label for="idebAprovados">Número de Alunos Aprovados:</label>
+                    <input type="number" id="idebAprovados" min="0" placeholder="Ex: 85">
+                </div>
+
+                <div class="form-group">
+                    <label for="idebReprovados">Número de Alunos Reprovados:</label>
+                    <input type="number" id="idebReprovados" min="0" placeholder="Ex: 10">
+                </div>
+
+                <div class="form-group">
+                    <label for="idebAbandonos">Número de Alunos que Abandonaram:</label>
+                    <input type="number" id="idebAbandonos" min="0" placeholder="Ex: 5">
+                </div>
+
+                <button onclick="calcularIDEB()">Calcular IDEB</button>
+
+                <div id="resultadoIDEB" class="prediction-result">
+                    <h4>📋 Resultado do IDEB</h4>
                     
                     <div class="result-card">
-                        <h4>Estatísticas Descritivas</h4>
-                        <p><strong>Total de Alunos:</strong> <span id="saebTotalAlunos">0</span></p>
-                        <p><strong>Proficiência Média:</strong> <span id="saebMedia">0</span> pontos</p>
-                        <p><strong>Maior Nota:</strong> <span id="saebMax">0</span> pontos</p>
-                        <p><strong>Menor Nota:</strong> <span id="saebMin">0</span> pontos</p>
-                        <p><strong>Desvio Padrão:</strong> <span id="saebDesvio">0</span> pontos</p>
+                        <h4>Componente de Proficiência</h4>
+                        <p><strong>Média SAEB (LP + MT):</strong> <span id="idebMediaSAEB">0</span> pontos</p>
+                        <p><strong>Nota Padronizada (0-10):</strong> <span id="idebNotaPadronizada">0</span></p>
                     </div>
                     
                     <div class="result-card">
-                        <h4>Distribuição por Níveis</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nível</th>
-                                    <th>Quantidade</th>
-                                    <th>Percentual</th>
-                                </tr>
-                            </thead>
-                            <tbody id="saebDistribuicao">
-                            </tbody>
-                        </table>
+                        <h4>Componente de Fluxo</h4>
+                        <p><strong>Taxa de Aprovação:</strong> <span id="idebTaxaAprovacao">0</span>%</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>IDEB Final</h4>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">
+                            IDEB = <span id="idebFinal">0</span>
+                        </p>
+                        <p><strong>Interpretação:</strong> <span id="idebInterpretacao">-</span></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Aba 4: Calculadora SPAECE - REFEITA -->
-        <div id="spaece" class="tab-content">
-            <h2>📊 Calculadora SPAECE</h2>
+        <!-- Aba 3: Histórico SAEB -->
+        <div id="saeb" class="tab-content">
+            <h2>📊 Histórico SAEB da Escola</h2>
             
             <div class="info-box">
-                <h4>🎯 Sobre o SPAECE</h4>
-                <p>O SPAECE é a avaliação estadual do Ceará que fornece diagnóstico anual do desempenho dos estudantes.</p>
-            </div>
-
-            <div class="calculator-section">
-                <h3>Calculadora de Proficiência Média SPAECE</h3>
-                
-                <div class="form-group">
-                    <label for="spaeceEtapa">Etapa de Ensino:</label>
-                    <select id="spaeceEtapa">
-                        <option value="2ano">2º Ano do EF</option>
-                        <option value="5ano">5º Ano do EF</option>
-                        <option value="9ano">9º Ano do EF</option>
-                        <option value="1em">1ª Série do EM</option>
-                        <option value="2em">2ª Série do EM</option>
-                        <option value="3em">3ª Série do EM</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="spaeceDisciplina">Disciplina:</label>
-                    <select id="spaeceDisciplina">
-                        <option value="lp">Língua Portuguesa</option>
-                        <option value="mt">Matemática</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="spaeceNotas">Notas dos Alunos (separadas por vírgula):</label>
-                    <textarea id="spaeceNotas" placeholder="Ex: 180, 210, 240, 190, 260, 230" rows="4"></textarea>
-                    <small>Insira as notas na escala SPAECE (0-500 pontos)</small>
-                </div>
-
-                <button onclick="calcularSPAECE()">Calcular Proficiência SPAECE</button>
-
-                <div id="resultadoSPAECE" class="prediction-result">
-                    <h4>📋 Resultados SPAECE</h4>
-                    
-                    <div class="result-card">
-                        <h4>Estatísticas da Turma</h4>
-                        <p><strong>Total de Alunos:</strong> <span id="spaeceTotalAlunos">0</span></p>
-                        <p><strong>Proficiência Média:</strong> <span id="spaeceMedia">0</span> pontos</p>
-                        <p><strong>Nível de Desempenho:</strong> <span id="spaeceNivel">-</span></p>
-                        <p><strong>Taxa de Participação:</strong> <span id="spaeceParticipacao">0</span>%</p>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>Distribuição por Níveis SPAECE</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nível</th>
-                                    <th>Faixa de Pontos</th>
-                                    <th>Quantidade</th>
-                                    <th>Percentual</th>
-                                </tr>
-                            </thead>
-                            <tbody id="spaeceDistribuicao">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Aba 5: Calculadora IDEP - MANTIDA -->
-        <div id="idep" class="tab-content">
-            <h2>📊 Calculadora IDEP</h2>
-            <!-- Conteúdo existente mantido -->
-        </div>
-
-        <!-- Aba 6: Histórico da Escola - NOVA -->
-        <div id="historico" class="tab-content">
-            <h2>🏫 Histórico de Indicadores da Escola</h2>
-            
-            <div class="info-box">
-                <h4>🔍 Consulta de Dados Oficiais</h4>
-                <p>Insira o código INEP da escola para consultar todos os indicadores dos últimos 10 anos.</p>
+                <h4>🔍 Consulta de Dados SAEB</h4>
+                <p>Insira o código INEP da escola para consultar o histórico SAEB dos últimos 10 anos.</p>
             </div>
 
             <div class="calculator-section">
                 <h3>Consulta por Código INEP</h3>
                 
                 <div class="form-group">
-                    <label for="codigoINEP">Código INEP da Escola:</label>
-                    <input type="text" id="codigoINEP" placeholder="Ex: 23000000" maxlength="8">
-                    <small>O código INEP possui 8 dígitos</small>
+                    <label for="saebCodigoINEP">Código INEP da Escola:</label>
+                    <input type="text" id="saebCodigoINEP" placeholder="Ex: 23000000" maxlength="8">
                 </div>
 
-                <button onclick="consultarEscola()">Consultar Dados da Escola</button>
+                <button onclick="consultarSAEB()">Consultar Histórico SAEB</button>
 
-                <div class="loading" id="loadingEscola">
-                    <p>🔍 Consultando dados da escola...</p>
+                <div class="loading" id="loadingSAEB">
+                    <p>🔍 Consultando dados SAEB...</p>
                 </div>
 
-                <div class="error" id="errorEscola">
+                <div class="error" id="errorSAEB">
                     <p>❌ Escola não encontrada ou erro na consulta.</p>
                 </div>
 
-                <div id="resultadoEscola" style="display: none;">
+                <div id="resultadoSAEB" style="display: none;">
                     <div class="school-info-card">
-                        <h3 id="nomeEscola">Nome da Escola</h3>
-                        <p><strong>Endereço:</strong> <span id="enderecoEscola">-</span></p>
-                        <p><strong>Município:</strong> <span id="municipioEscola">-</span></p>
-                        <p><strong>Dependência Administrativa:</strong> <span id="dependenciaEscola">-</span></p>
-                        <p><strong>Localização:</strong> <span id="localizacaoEscola">-</span></p>
+                        <h3 id="saebNomeEscola">Nome da Escola</h3>
+                        <p><strong>Endereço:</strong> <span id="saebEnderecoEscola">-</span></p>
+                        <p><strong>Município:</strong> <span id="saebMunicipioEscola">-</span></p>
                     </div>
 
-                    <h3>📈 Evolução dos Indicadores (Últimos 10 Anos)</h3>
+                    <h3>📈 Evolução das Proficiências SAEB</h3>
                     
-                    <div class="comparison-chart">
-                        <h4>IDEB - Evolução Histórica</h4>
-                        <div class="chart-container">
-                            <canvas id="chartIDEB"></canvas>
-                        </div>
+                    <div class="chart-container">
+                        <canvas id="chartSAEB"></canvas>
                     </div>
 
-                    <div class="comparison-chart">
-                        <h4>SAEB - Proficiência Média</h4>
-                        <div class="chart-container">
-                            <canvas id="chartSAEB"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="comparison-chart">
-                        <h4>SPAECE - Proficiência Média</h4>
-                        <div class="chart-container">
-                            <canvas id="chartSPAECE"></canvas>
-                        </div>
-                    </div>
-
-                    <h3>📊 Tabela de Dados Históricos</h3>
+                    <h3>📊 Tabela de Dados SAEB</h3>
                     <table>
                         <thead>
                             <tr>
                                 <th>Ano</th>
-                                <th>IDEB</th>
-                                <th>SAEB LP</th>
-                                <th>SAEB MT</th>
-                                <th>SPAECE LP</th>
-                                <th>SPAECE MT</th>
-                                <th>Taxa Aprovação</th>
+                                <th>LP 5º EF</th>
+                                <th>MT 5º EF</th>
+                                <th>LP 9º EF</th>
+                                <th>MT 9º EF</th>
+                                <th>LP 3º EM</th>
+                                <th>MT 3º EM</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelaHistorico">
+                        <tbody id="tabelaSAEB">
+                        </tbody>
+                    </table>
+
+                    <h3>🎯 Distribuição por Níveis</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Etapa</th>
+                                <th>Disciplina</th>
+                                <th>Abaixo Básico</th>
+                                <th>Básico</th>
+                                <th>Proficiente</th>
+                                <th>Avançado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaNiveisSAEB">
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Aba 7: Preditor de Promoção - MANTIDA -->
-        <div id="promocao" class="tab-content">
-            <h2>🎯 Preditor de Promoção sem Titulação</h2>
-            <!-- Conteúdo do preditor mantido -->
+        <!-- Aba 4: Histórico SPAECE -->
+        <div id="spaece" class="tab-content">
+            <h2>📊 Histórico SPAECE da Escola</h2>
+            
+            <div class="info-box">
+                <h4>🔍 Consulta de Dados SPAECE</h4>
+                <p>Insira o código INEP da escola para consultar o histórico SPAECE dos últimos 10 anos.</p>
+            </div>
+
+            <div class="calculator-section">
+                <h3>Consulta por Código INEP</h3>
+                
+                <div class="form-group">
+                    <label for="spaeceCodigoINEP">Código INEP da Escola:</label>
+                    <input type="text" id="spaeceCodigoINEP" placeholder="Ex: 23000000" maxlength="8">
+                </div>
+
+                <button onclick="consultarSPAECE()">Consultar Histórico SPAECE</button>
+
+                <div class="loading" id="loadingSPAECE">
+                    <p>🔍 Consultando dados SPAECE...</p>
+                </div>
+
+                <div class="error" id="errorSPAECE">
+                    <p>❌ Escola não encontrada ou erro na consulta.</p>
+                </div>
+
+                <div id="resultadoSPAECE" style="display: none;">
+                    <div class="school-info-card">
+                        <h3 id="spaeceNomeEscola">Nome da Escola</h3>
+                        <p><strong>Endereço:</strong> <span id="spaeceEnderecoEscola">-</span></p>
+                        <p><strong>Município:</strong> <span id="spaeceMunicipioEscola">-</span></p>
+                    </div>
+
+                    <h3>📈 Evolução das Proficiências SPAECE</h3>
+                    
+                    <div class="chart-container">
+                        <canvas id="chartSPAECE"></canvas>
+                    </div>
+
+                    <h3>📊 Tabela de Dados SPAECE</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>LP 5º EF</th>
+                                <th>MT 5º EF</th>
+                                <th>LP 9º EF</th>
+                                <th>MT 9º EF</th>
+                                <th>LP 3º EM</th>
+                                <th>MT 3º EM</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaSPAECE">
+                        </tbody>
+                    </table>
+
+                    <h3>🎯 Distribuição por Níveis SPAECE</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Etapa</th>
+                                <th>Disciplina</th>
+                                <th>Abaixo Básico</th>
+                                <th>Básico</th>
+                                <th>Adequado</th>
+                                <th>Desejável</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaNiveisSPAECE">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <footer>
-        <p><strong>indicadores.blog.br</strong> - Plataforma para gestores escolares</p>
-        <p>© 2025 | Baseado nas metodologias oficiais do INEP e Secretarias de Educação</p>
-        <p><em>Esta plataforma utiliza dados simulados para demonstração. Para dados oficiais, consulte os sites oficiais.</em></p>
-    </footer>
+        <!-- Aba 5: Previsão IDEB -->
+        <div id="previsao" class="tab-content">
+            <h2>🔮 Previsão do IDEB</h2>
+            
+            <div class="info-box">
+                <h4>🎯 Como funciona a previsão?</h4>
+                <p>Esta calculadora estima o IDEB futuro baseado em melhorias planejadas na proficiência e no fluxo escolar.</p>
+            </div>
 
-    <!-- Incluir Chart.js para gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        // FUNÇÕES PRINCIPAIS
-        function openTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        // CONTADOR DE VISITAS
-        function gerenciarContadorVisitas() {
-            let visitas = localStorage.getItem('contadorVisitas_indicadores_blog_br');
-            if (visitas === null) {
-                visitas = 1;
-            } else {
-                visitas = parseInt(visitas) + 1;
-            }
-            localStorage.setItem('contadorVisitas_indicadores_blog_br', visitas.toString());
-            document.getElementById('numeroVisitas').textContent = visitas.toLocaleString('pt-BR');
-        }
-
-        // CALCULADORA SAEB
-        function calcularSAEB() {
-            const notasInput = document.getElementById('saebNotas').value;
-            const etapa = document.getElementById('saebEtapa').value;
-            
-            if (!notasInput.trim()) {
-                alert('Por favor, insira as notas dos alunos.');
-                return;
-            }
-            
-            const notas = notasInput.split(',').map(nota => parseFloat(nota.trim())).filter(nota => !isNaN(nota));
-            
-            if (notas.length === 0) {
-                alert('Nenhuma nota válida encontrada.');
-                return;
-            }
-            
-            // Cálculos estatísticos
-            const totalAlunos = notas.length;
-            const soma = notas.reduce((a, b) => a + b, 0);
-            const media = soma / totalAlunos;
-            const max = Math.max(...notas);
-            const min = Math.min(...notas);
-            
-            // Desvio padrão
-            const variancia = notas.reduce((acc, nota) => acc + Math.pow(nota - media, 2), 0) / totalAlunos;
-            const desvio = Math.sqrt(variancia);
-            
-            // Distribuição por níveis (exemplo simplificado)
-            const niveis = {
-                'Abaixo do Básico': notas.filter(n => n <= 250).length,
-                'Básico': notas.filter(n => n > 250 && n <= 300).length,
-                'Proficiente': notas.filter(n => n > 300 && n <= 350).length,
-                'Avançado': notas.filter(n => n > 350).length
-            };
-            
-            // Atualizar resultados
-            document.getElementById('saebTotalAlunos').textContent = totalAlunos;
-            document.getElementById('saebMedia').textContent = media.toFixed(1);
-            document.getElementById('saebMax').textContent = max.toFixed(1);
-            document.getElementById('saebMin').textContent = min.toFixed(1);
-            document.getElementById('saebDesvio').textContent = desvio.toFixed(1);
-            
-            const tbody = document.getElementById('saebDistribuicao');
-            tbody.innerHTML = '';
-            
-            for (const [nivel, quantidade] of Object.entries(niveis)) {
-                const percentual = ((quantidade / totalAlunos) * 100).toFixed(1);
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${nivel}</td>
-                        <td>${quantidade}</td>
-                        <td>${percentual}%</td>
-                    </tr>
-                `;
-            }
-            
-            document.getElementById('resultadoSAEB').style.display = 'block';
-        }
-
-        // CALCULADORA SPAECE
-        function calcularSPAECE() {
-            const notasInput = document.getElementById('spaeceNotas').value;
-            const etapa = document.getElementById('spaeceEtapa').value;
-            const disciplina = document.getElementById('spaeceDisciplina').value;
-            
-            if (!notasInput.trim()) {
-                alert('Por favor, insira as notas dos alunos.');
-                return;
-            }
-            
-            const notas = notasInput.split(',').map(nota => parseFloat(nota.trim())).filter(nota => !isNaN(nota));
-            
-            if (notas.length === 0) {
-                alert('Nenhuma nota válida encontrada.');
-                return;
-            }
-            
-            // Cálculos básicos
-            const totalAlunos = notas.length;
-            const soma = notas.reduce((a, b) => a + b, 0);
-            const media = soma / totalAlunos;
-            
-            // Determinar níveis SPAECE baseado na etapa e disciplina
-            let limites = [];
-            if (etapa === '5ano') {
-                limites = [150, 200, 250]; // Abaixo, Básico, Adequado, Desejável
-            } else if (etapa === '9ano') {
-                limites = [225, 275, 325];
-            } else { // EM
-                if (disciplina === 'lp') {
-                    limites = [275, 325, 375];
-                } else {
-                    limites = [300, 350, 400];
-                }
-            }
-            
-            // Distribuição por níveis
-            const distribuicao = {
-                'Abaixo do Básico': notas.filter(n => n <= limites[0]).length,
-                'Básico': notas.filter(n => n > limites[0] && n <= limites[1]).length,
-                'Adequado': notas.filter(n => n > limites[1] && n <= limites[2]).length,
-                'Desejável': notas.filter(n => n > limites[2]).length
-            };
-            
-            // Determinar nível médio
-            let nivelMedio = '';
-            if (media <= limites[0]) nivelMedio = 'Abaixo do Básico';
-            else if (media <= limites[1]) nivelMedio = 'Básico';
-            else if (media <= limites[2]) nivelMedio = 'Adequado';
-            else nivelMedio = 'Desejável';
-            
-            // Atualizar resultados
-            document.getElementById('spaeceTotalAlunos').textContent = totalAlunos;
-            document.getElementById('spaeceMedia').textContent = media.toFixed(1);
-            document.getElementById('spaeceNivel').textContent = nivelMedio;
-            document.getElementById('spaeceParticipacao').textContent = '95'; // Simulado
-            
-            const tbody = document.getElementById('spaeceDistribuicao');
-            tbody.innerHTML = '';
-            
-            for (const [nivel, quantidade] of Object.entries(distribuicao)) {
-                const percentual = ((quantidade / totalAlunos) * 100).toFixed(1);
-                let faixa = '';
+            <div class="calculator-section">
+                <h3>Calculadora de Previsão do IDEB</h3>
                 
-                if (nivel === 'Abaixo do Básico') faixa = `até ${limites[0]}`;
-                else if (nivel === 'Básico') faixa = `${limites[0]+1} a ${limites[1]}`;
-                else if (nivel === 'Adequado') faixa = `${limites[1]+1} a ${limites[2]}`;
-                else faixa = `acima de ${limites[2]}`;
+                <div class="form-group">
+                    <label for="previsaoIDEBAtual">IDEB Atual:</label>
+                    <input type="number" id="previsaoIDEBAtual" min="0" max="10" step="0.1" placeholder="Ex: 5.2">
+                </div>
+
+                <div class="form-group">
+                    <label for="previsaoMelhoriaProficiencia">Melhoria Esperada na Proficiência (%):</label>
+                    <input type="number" id="previsaoMelhoriaProficiencia" min="0" max="50" step="1" placeholder="Ex: 10">
+                </div>
+
+                <div class="form-group">
+                    <label for="previsaoMelhoriaFluxo">Melhoria Esperada no Fluxo (%):</label>
+                    <input type="number" id="previsaoMelhoriaFluxo" min="0" max="20" step="1" placeholder="Ex: 5">
+                </div>
+
+                <div class="form-group">
+                    <label for="previsaoAnos">Período de Projeção (anos):</label>
+                    <select id="previsaoAnos">
+                        <option value="2">2 anos</option>
+                        <option value="4">4 anos</option>
+                        <option value="6">6 anos</option>
+                    </select>
+                </div>
+
+                <button onclick="calcularPrevisaoIDEB()">Calcular Previsão</button>
+
+                <div id="resultadoPrevisao" class="prediction-result">
+                    <h4>📈 Projeção do IDEB</h4>
+                    
+                    <div class="result-card">
+                        <h4>Evolução Projetada</h4>
+                        <div class="chart-container">
+                            <canvas id="chartPrevisao"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h4>Resultados da Projeção</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ano</th>
+                                    <th>IDEB Projetado</th>
+                                    <th>Melhoria</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaPrevisao">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba 6: Histórico IDEB -->
+        <div id="historico" class="tab-content">
+            <h2>📈 Histórico IDEB da Escola</h2>
+            
+            <div class="info-box">
+                <h4>🔍 Consulta de Dados IDEB</h4>
+                <p>Insira o código INEP da escola para consultar o histórico IDEB dos últimos 10 anos com análise por níveis.</p>
+            </div>
+
+            <div class="calculator-section">
+                <h3>Consulta por Código INEP</h3>
                 
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${nivel}</td>
-                        <td>${faixa}</td>
-                        <td>${quantidade}</td>
-                        <td>${percentual}%</td>
-                    </tr>
-                `;
-            }
-            
-            document.getElementById('resultadoSPAECE').style.display = 'block';
-        }
+                <div class="form-group">
+                    <label for="historicoCodigoINEP">Código INEP da Escola:</label>
+                    <input type="text" id="historicoCodigoINEP" placeholder="Ex: 23000000" maxlength="8">
+                </div>
 
-        // CONSULTA HISTÓRICO DA ESCOLA
-        function consultarEscola() {
-            const codigoINEP = document.getElementById('codigoINEP').value.trim();
-            
-            if (!codigoINEP || codigoINEP.length !== 8) {
-                alert('Por favor, insira um código INEP válido (8 dígitos).');
-                return;
-            }
-            
-            // Simular consulta
-            document.getElementById('loadingEscola').style.display = 'block';
-            document.getElementById('errorEscola').style.display = 'none';
-            document.getElementById('resultadoEscola').style.display = 'none';
-            
-            setTimeout(() => {
-                document.getElementById('loadingEscola').style.display = 'none';
-                
-                // Dados simulados para demonstração
-                const escola = gerarDadosEscolaSimulados(codigoINEP);
-                
-                if (escola) {
-                    exibirDadosEscola(escola);
-                    document.getElementById('resultadoEscola').style.display = 'block';
-                } else {
-                    document.getElementById('errorEscola').style.display = 'block';
-                }
-            }, 2000);
-        }
+                <button onclick="consultarHistoricoIDEB()">Consultar Histórico IDEB</button>
 
-        function gerarDadosEscolaSimulados(codigoINEP) {
-            // Gerar dados históricos simulados
-            const anos = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-            const historico = anos.map(ano => ({
-                ano,
-                ideb: (3.5 + Math.random() * 2.5).toFixed(1),
-                saeb_lp: Math.floor(250 + Math.random() * 100),
-                saeb_mt: Math.floor(250 + Math.random() * 100),
-                spaece_lp: Math.floor(250 + Math.random() * 100),
-                spaece_mt: Math.floor(250 + Math.random() * 100),
-                taxa_aprovacao: (85 + Math.random() * 15).toFixed(1)
-            }));
-            
-            return {
-                nome: `Escola Estadual ${codigoINEP}`,
-                endereco: 'Rua Exemplo, 123 - Centro',
-                municipio: 'Fortaleza',
-                dependencia: 'Estadual',
-                localizacao: 'Urbana',
-                historico
-            };
-        }
+                <div class="loading" id="loadingHistorico">
+                    <p>🔍 Consultando dados IDEB...</p>
+                </div>
 
-        function exibirDadosEscola(escola) {
-            // Informações básicas
-            document.getElementById('nomeEscola').textContent = escola.nome;
-            document.getElementById('enderecoEscola').textContent = escola.endereco;
-            document.getElementById('municipioEscola').textContent = escola.municipio;
-            document.getElementById('dependenciaEscola').textContent = escola.dependencia;
-            document.getElementById('localizacaoEscola').textContent = escola.localizacao;
-            
-            // Tabela histórica
-            const tbody = document.getElementById('tabelaHistorico');
-            tbody.innerHTML = '';
-            
-            escola.historico.forEach(dado => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${dado.ano}</td>
-                        <td>${dado.ideb}</td>
-                        <td>${dado.saeb_lp}</td>
-                        <td>${dado.saeb_mt}</td>
-                        <td>${dado.spaece_lp}</td>
-                        <td>${dado.spaece_mt}</td>
-                        <td>${dado.taxa_aprovacao}%</td>
-                    </tr>
-                `;
-            });
-            
-            // Gráficos
-            criarGraficos(escola.historico);
-        }
+                <div class="error" id="errorHistorico">
+                    <p>❌ Escola não encontrada ou erro na consulta.</p>
+                </div>
 
-        function criarGraficos(historico) {
-            const anos = historico.map(h => h.ano);
-            const ideb = historico.map(h => parseFloat(h.ideb));
-            const saeb_lp = historico.map(h => h.saeb_lp);
-            const saeb_mt = historico.map(h => h.saeb_mt);
-            const spaece_lp = historico.map(h => h.spaece_lp);
-            const spaece_mt = historico.map(h => h.spaece_mt);
-            
-            // Gráfico IDEB
-            new Chart(document.getElementById('chartIDEB'), {
-                type: 'line',
-                data: {
-                    labels: anos,
-                    datasets: [{
-                        label: 'IDEB',
-                        data: ideb,
-                        borderColor: '#059669',
-                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Evolução do IDEB'
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico SAEB
-            new Chart(document.getElementById('chartSAEB'), {
-                type: 'line',
-                data: {
-                    labels: anos,
-                    datasets: [
-                        {
-                            label: 'SAEB - Língua Portuguesa',
-                            data: saeb_lp,
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4
-                        },
-                        {
-                            label: 'SAEB - Matemática',
-                            data: saeb_mt,
-                            borderColor: '#ef4444',
-                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Evolução das Proficiências SAEB'
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico SPAECE
-            new Chart(document.getElementById('chartSPAECE'), {
-                type: 'line',
-                data: {
-                    labels: anos,
-                    datasets: [
-                        {
-                            label: 'SPAECE - Língua Portuguesa',
-                            data: spaece_lp,
-                            borderColor: '#8b5cf6',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            tension: 0.4
-                        },
-                        {
-                            label: 'SPAECE - Matemática',
-                            data: spaece_mt,
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Evolução das Proficiências SPAECE'
-                        }
-                    }
-                }
-            });
-        }
+                <div id="resultadoHistorico" style="display: none;">
+                    <div class="school-info-card">
+                        <h3 id="historicoNomeEscola">Nome da Escola</h3>
+                        <p><strong>Endereço:</strong> <span id="historicoEnderecoEscola">-</span></p>
+                        <p><strong>Município:</strong> <span id="historicoMunicipioEscola">-</span></p>
+                    </div>
 
-        // INICIALIZAÇÃO
-        document.addEventListener('DOMContentLoaded', function() {
-            gerenciarContadorVisitas();
-        });
-    </script>
-</body>
-</html>
+                    <h3>📈 Evolução do IDEB</h3>
+                    
+                    <div class="chart-container">
+                        <canvas id="chartHistoricoIDEB"></canvas>
+                    </div>
+
+                    <h3>📊 Tabela Histórica do IDEB</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>IDEB 5º EF</th>
+                                <th>Nível</th>
+                                <th>IDEB 9º EF</th>
+                                <th>Nível</th>
+                                <th>IDEB EM
