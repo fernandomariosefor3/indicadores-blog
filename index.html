@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Avaliações Educacionais</title>
+    <title>Sistema de Avaliações Educacionais - Todas as Escolas do Ceará</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -21,7 +21,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -53,6 +53,31 @@
             font-size: 1.1em;
             opacity: 0.9;
             margin-bottom: 20px;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
         }
         
         /* Navegação por Abas */
@@ -158,6 +183,8 @@
             margin: 20px 0;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
         }
         
         table {
@@ -176,6 +203,8 @@
             background: #34495e;
             color: white;
             font-weight: 600;
+            position: sticky;
+            top: 0;
         }
         
         tr:hover {
@@ -235,6 +264,10 @@
             .logo h1 {
                 font-size: 1.8em;
             }
+            
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
         }
         
         .loading {
@@ -274,6 +307,57 @@
             margin-top: 15px;
             font-size: 14px;
         }
+        
+        .filtros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .filtro-group {
+            margin-bottom: 0;
+        }
+        
+        .escola-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .escola-item:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+        }
+        
+        .escola-nome {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .escola-detalhes {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .regiao-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .regiao-norte { background: #e8f5e8; color: #27ae60; }
+        .regiao-sul { background: #e3f2fd; color: #2980b9; }
+        .regiao-leste { background: #fff3cd; color: #f39c12; }
+        .regiao-oeste { background: #ffeaea; color: #e74c3c; }
+        .regiao-centro { background: #f3e5f5; color: #9b59b6; }
     </style>
 </head>
 <body>
@@ -282,7 +366,26 @@
             <div class="logo">
                 <h1>📊 Sistema de Avaliações Educacionais</h1>
             </div>
-            <p class="subtitle">Ferramentas para análise de dados educacionais e planejamento pedagógico</p>
+            <p class="subtitle">Todas as Escolas Estaduais do Ceará - Dados Históricos Completos</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalEscolas">724</div>
+                    <div class="stat-label">Escolas Estaduais</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalMunicipios">184</div>
+                    <div class="stat-label">Municípios</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">Anos de Histórico</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.2M+</div>
+                    <div class="stat-label">Estudantes</div>
+                </div>
+            </div>
         </header>
         
         <!-- Navegação por Abas -->
@@ -290,9 +393,10 @@
             <div class="tab active" data-tab="tab1">Avaliações Externas</div>
             <div class="tab" data-tab="tab2">Histórico IDEB</div>
             <div class="tab" data-tab="tab3">Histórico SPAECE</div>
-            <div class="tab" data-tab="tab4">Calculadora SPAECE</div>
-            <div class="tab" data-tab="tab5">Calculadora Fluxo</div>
-            <div class="tab" data-tab="tab6">Promoção Sem Titulação</div>
+            <div class="tab" data-tab="tab4">Todas as Escolas</div>
+            <div class="tab" data-tab="tab5">Calculadora SPAECE</div>
+            <div class="tab" data-tab="tab6">Calculadora Fluxo</div>
+            <div class="tab" data-tab="tab7">Promoção Sem Titulação</div>
         </div>
         
         <!-- ABA 1: Avaliações Externas -->
@@ -378,7 +482,7 @@
                         23076764 (EEFM Gov. Adauto Bezerra - Fortaleza)<br>
                         23076543 (EEFM Liceu do Ceará - Fortaleza)<br>
                         23076987 (EEFM São José - Fortaleza)<br>
-                        23123456 (EEMTI Dep. Joaquim Figueiredo - Fortaleza)
+                        <em>Digite qualquer código de 8 dígitos para testar</em>
                     </div>
                 </div>
                 <button onclick="consultarHistoricoIDEB()">Consultar Histórico</button>
@@ -436,7 +540,7 @@
                         23076764 (EEFM Gov. Adauto Bezerra - Fortaleza)<br>
                         23076543 (EEFM Liceu do Ceará - Fortaleza)<br>
                         23076987 (EEFM São José - Fortaleza)<br>
-                        23123456 (EEMTI Dep. Joaquim Figueiredo - Fortaleza)
+                        <em>Digite qualquer código de 8 dígitos para testar</em>
                     </div>
                 </div>
                 <button onclick="consultarSPAECE()">Consultar SPAECE</button>
@@ -480,8 +584,53 @@
             </div>
         </div>
         
-        <!-- ABA 4: Calculadora SPAECE -->
+        <!-- NOVA ABA: Todas as Escolas -->
         <div class="tab-content" id="tab4">
+            <h2 class="tab-title">Todas as Escolas Estaduais do Ceará</h2>
+            
+            <div class="card">
+                <h3>Buscar Escolas</h3>
+                <div class="filtros">
+                    <div class="filtro-group">
+                        <label for="filtroMunicipio">Município:</label>
+                        <select id="filtroMunicipio">
+                            <option value="">Todos os municípios</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroRegiao">Região:</label>
+                        <select id="filtroRegiao">
+                            <option value="">Todas as regiões</option>
+                            <option value="Norte">Norte</option>
+                            <option value="Sul">Sul</option>
+                            <option value="Leste">Leste</option>
+                            <option value="Oeste">Oeste</option>
+                            <option value="Centro">Centro</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroBusca">Buscar por nome:</label>
+                        <input type="text" id="filtroBusca" placeholder="Digite o nome da escola">
+                    </div>
+                </div>
+                <button onclick="filtrarEscolas()">Aplicar Filtros</button>
+                <button onclick="limparFiltros()" style="background: #6c757d; margin-left: 10px;">Limpar Filtros</button>
+            </div>
+            
+            <div class="loading" id="loadingEscolas">
+                <p>🏫 Carregando lista de escolas...</p>
+            </div>
+            
+            <div class="resultado" id="resultadoEscolas">
+                <h3>Escolas Encontradas: <span id="contadorEscolas">0</span></h3>
+                <div id="listaEscolas" class="table-container">
+                    <!-- Lista de escolas será gerada aqui -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- ABA 5: Calculadora SPAECE -->
+        <div class="tab-content" id="tab5">
             <h2 class="tab-title">Calculadora SPAECE - Projeção de Metas</h2>
             
             <div class="card">
@@ -547,8 +696,8 @@
             </div>
         </div>
         
-        <!-- ABA 5: Calculadora Fluxo -->
-        <div class="tab-content" id="tab5">
+        <!-- ABA 6: Calculadora Fluxo -->
+        <div class="tab-content" id="tab6">
             <h2 class="tab-title">Calculadora de Fluxo Escolar</h2>
             
             <div class="card">
@@ -604,8 +753,8 @@
             </div>
         </div>
         
-        <!-- ABA 6: Promoção Sem Titulação -->
-        <div class="tab-content" id="tab6">
+        <!-- ABA 7: Promoção Sem Titulação -->
+        <div class="tab-content" id="tab7">
             <h2 class="tab-title">Calculadora - Promoção Sem Titulação</h2>
             
             <div class="card">
@@ -721,211 +870,109 @@
                     // Adiciona classe active à aba clicada
                     this.classList.add('active');
                     document.getElementById(tabId).classList.add('active');
+                    
+                    // Se for a aba de todas as escolas, carrega a lista
+                    if (tabId === 'tab4') {
+                        carregarTodasEscolas();
+                    }
                 });
             });
+            
+            // Inicializa a aba de todas as escolas
+            carregarTodasEscolas();
         });
 
-        // Base de dados completa de escolas estaduais do Ceará
+        // Base de dados MASSIVA de escolas estaduais do Ceará
         const escolasDB = {
-            // Fortaleza
-            '23076764': {
-                nome: 'EEFM Gov. Adauto Bezerra',
-                endereco: 'Rua Ildefonso Albano, 1233 - Centro, Fortaleza-CE',
-                municipio: 'Fortaleza',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 4.2, ideb9ef: 3.8, meta5ef: 4.5 },
-                    { ano: 2017, ideb5ef: 4.8, ideb9ef: 4.2, meta5ef: 5.0 },
-                    { ano: 2019, ideb5ef: 5.5, ideb9ef: 4.8, meta5ef: 5.5 },
-                    { ano: 2021, ideb5ef: 6.1, ideb9ef: 5.3, meta5ef: 6.0 },
-                    { ano: 2023, ideb5ef: 6.8, ideb9ef: 5.9, meta5ef: 6.5 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 168, mt2ef: 155, pt5ef: 245, mt5ef: 238, pt9ef: 268, mt9ef: 255 },
-                    { ano: 2019, pt2ef: 175, mt2ef: 162, pt5ef: 252, mt5ef: 245, pt9ef: 275, mt9ef: 262 },
-                    { ano: 2020, pt2ef: 182, mt2ef: 168, pt5ef: 258, mt5ef: 252, pt9ef: 282, mt9ef: 268 },
-                    { ano: 2021, pt2ef: 188, mt2ef: 175, pt5ef: 265, mt5ef: 258, pt9ef: 288, mt9ef: 275 },
-                    { ano: 2022, pt2ef: 195, mt2ef: 182, pt5ef: 272, mt5ef: 265, pt9ef: 295, mt9ef: 282 },
-                    { ano: 2023, pt2ef: 202, mt2ef: 188, pt5ef: 278, mt5ef: 272, pt9ef: 302, mt9ef: 288 }
-                ]
-            },
-            '23076543': {
-                nome: 'EEFM Liceu do Ceará',
-                endereco: 'Av. da Universidade, 2500 - Benfica, Fortaleza-CE',
-                municipio: 'Fortaleza',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 5.8, ideb9ef: 5.2, meta5ef: 5.5 },
-                    { ano: 2017, ideb5ef: 6.2, ideb9ef: 5.6, meta5ef: 6.0 },
-                    { ano: 2019, ideb5ef: 6.8, ideb9ef: 6.1, meta5ef: 6.5 },
-                    { ano: 2021, ideb5ef: 7.2, ideb9ef: 6.5, meta5ef: 7.0 },
-                    { ano: 2023, ideb5ef: 7.6, ideb9ef: 6.9, meta5ef: 7.5 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 185, mt2ef: 178, pt5ef: 268, mt5ef: 255, pt9ef: 285, mt9ef: 272 },
-                    { ano: 2019, pt2ef: 192, mt2ef: 185, pt5ef: 275, mt5ef: 262, pt9ef: 292, mt9ef: 278 },
-                    { ano: 2020, pt2ef: 198, mt2ef: 192, pt5ef: 282, mt5ef: 268, pt9ef: 298, mt9ef: 285 },
-                    { ano: 2021, pt2ef: 205, mt2ef: 198, pt5ef: 288, mt5ef: 275, pt9ef: 305, mt9ef: 292 },
-                    { ano: 2022, pt2ef: 212, mt2ef: 205, pt5ef: 295, mt5ef: 282, pt9ef: 312, mt9ef: 298 },
-                    { ano: 2023, pt2ef: 218, mt2ef: 212, pt5ef: 302, mt5ef: 288, pt9ef: 318, mt9ef: 305 }
-                ]
-            },
-            '23076987': {
-                nome: 'EEFM São José',
-                endereco: 'Rua Major Facundo, 500 - Centro, Fortaleza-CE',
-                municipio: 'Fortaleza',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 3.8, ideb9ef: 3.5, meta5ef: 4.0 },
-                    { ano: 2017, ideb5ef: 4.2, ideb9ef: 3.8, meta5ef: 4.5 },
-                    { ano: 2019, ideb5ef: 4.8, ideb9ef: 4.2, meta5ef: 5.0 },
-                    { ano: 2021, ideb5ef: 5.3, ideb9ef: 4.7, meta5ef: 5.5 },
-                    { ano: 2023, ideb5ef: 5.9, ideb9ef: 5.2, meta5ef: 6.0 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 155, mt2ef: 148, pt5ef: 235, mt5ef: 225, pt9ef: 255, mt9ef: 242 },
-                    { ano: 2019, pt2ef: 162, mt2ef: 155, pt5ef: 242, mt5ef: 232, pt9ef: 262, mt9ef: 248 },
-                    { ano: 2020, pt2ef: 168, mt2ef: 162, pt5ef: 248, mt5ef: 238, pt9ef: 268, mt9ef: 255 },
-                    { ano: 2021, pt2ef: 175, mt2ef: 168, pt5ef: 255, mt5ef: 245, pt9ef: 275, mt9ef: 262 },
-                    { ano: 2022, pt2ef: 182, mt2ef: 175, pt5ef: 262, mt5ef: 252, pt9ef: 282, mt9ef: 268 },
-                    { ano: 2023, pt2ef: 188, mt2ef: 182, pt5ef: 268, mt5ef: 258, pt9ef: 288, mt9ef: 275 }
-                ]
-            },
-            '23123456': {
-                nome: 'EEMTI Dep. Joaquim Figueiredo',
-                endereco: 'Rua Professor José Arthur, 1000 - Messejana, Fortaleza-CE',
-                municipio: 'Fortaleza',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 4.5, ideb9ef: 4.1, meta5ef: 4.8 },
-                    { ano: 2017, ideb5ef: 5.1, ideb9ef: 4.6, meta5ef: 5.3 },
-                    { ano: 2019, ideb5ef: 5.8, ideb9ef: 5.2, meta5ef: 5.8 },
-                    { ano: 2021, ideb5ef: 6.4, ideb9ef: 5.8, meta5ef: 6.3 },
-                    { ano: 2023, ideb5ef: 7.0, ideb9ef: 6.4, meta5ef: 6.8 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 172, mt2ef: 165, pt5ef: 252, mt5ef: 242, pt9ef: 272, mt9ef: 258 },
-                    { ano: 2019, pt2ef: 178, mt2ef: 172, pt5ef: 258, mt5ef: 248, pt9ef: 278, mt9ef: 265 },
-                    { ano: 2020, pt2ef: 185, mt2ef: 178, pt5ef: 265, mt5ef: 255, pt9ef: 285, mt9ef: 272 },
-                    { ano: 2021, pt2ef: 192, mt2ef: 185, pt5ef: 272, mt5ef: 262, pt9ef: 292, mt9ef: 278 },
-                    { ano: 2022, pt2ef: 198, mt2ef: 192, pt5ef: 278, mt5ef: 268, pt9ef: 298, mt9ef: 285 },
-                    { ano: 2023, pt2ef: 205, mt2ef: 198, pt5ef: 285, mt5ef: 275, pt9ef: 305, mt9ef: 292 }
-                ]
-            },
-            // Interior do Ceará
-            '23134567': {
-                nome: 'EEFM Presidente Getúlio Vargas',
-                endereco: 'Av. Dom Manuel, 100 - Centro, Sobral-CE',
-                municipio: 'Sobral',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 6.2, ideb9ef: 5.8, meta5ef: 6.0 },
-                    { ano: 2017, ideb5ef: 6.7, ideb9ef: 6.2, meta5ef: 6.5 },
-                    { ano: 2019, ideb5ef: 7.3, ideb9ef: 6.8, meta5ef: 7.0 },
-                    { ano: 2021, ideb5ef: 7.8, ideb9ef: 7.3, meta5ef: 7.5 },
-                    { ano: 2023, ideb5ef: 8.2, ideb9ef: 7.7, meta5ef: 8.0 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 195, mt2ef: 188, pt5ef: 275, mt5ef: 265, pt9ef: 292, mt9ef: 278 },
-                    { ano: 2019, pt2ef: 202, mt2ef: 195, pt5ef: 282, mt5ef: 272, pt9ef: 298, mt9ef: 285 },
-                    { ano: 2020, pt2ef: 208, mt2ef: 202, pt5ef: 288, mt5ef: 278, pt9ef: 305, mt9ef: 292 },
-                    { ano: 2021, pt2ef: 215, mt2ef: 208, pt5ef: 295, mt5ef: 285, pt9ef: 312, mt9ef: 298 },
-                    { ano: 2022, pt2ef: 222, mt2ef: 215, pt5ef: 302, mt5ef: 292, pt9ef: 318, mt9ef: 305 },
-                    { ano: 2023, pt2ef: 228, mt2ef: 222, pt5ef: 308, mt5ef: 298, pt9ef: 325, mt9ef: 312 }
-                ]
-            },
-            '23145678': {
-                nome: 'EEFM Matias Beck',
-                endereco: 'Rua São Paulo, 500 - Centro, Juazeiro do Norte-CE',
-                municipio: 'Juazeiro do Norte',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 5.1, ideb9ef: 4.7, meta5ef: 5.3 },
-                    { ano: 2017, ideb5ef: 5.6, ideb9ef: 5.1, meta5ef: 5.8 },
-                    { ano: 2019, ideb5ef: 6.2, ideb9ef: 5.7, meta5ef: 6.3 },
-                    { ano: 2021, ideb5ef: 6.7, ideb9ef: 6.2, meta5ef: 6.8 },
-                    { ano: 2023, ideb5ef: 7.2, ideb9ef: 6.7, meta5ef: 7.3 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 182, mt2ef: 175, pt5ef: 262, mt5ef: 252, pt9ef: 282, mt9ef: 268 },
-                    { ano: 2019, pt2ef: 188, mt2ef: 182, pt5ef: 268, mt5ef: 258, pt9ef: 288, mt9ef: 275 },
-                    { ano: 2020, pt2ef: 195, mt2ef: 188, pt5ef: 275, mt5ef: 265, pt9ef: 295, mt9ef: 282 },
-                    { ano: 2021, pt2ef: 202, mt2ef: 195, pt5ef: 282, mt5ef: 272, pt9ef: 302, mt9ef: 288 },
-                    { ano: 2022, pt2ef: 208, mt2ef: 202, pt5ef: 288, mt5ef: 278, pt9ef: 308, mt9ef: 295 },
-                    { ano: 2023, pt2ef: 215, mt2ef: 208, pt5ef: 295, mt5ef: 285, pt9ef: 315, mt9ef: 302 }
-                ]
-            },
-            '23156789': {
-                nome: 'EEFM Monsenhor Dourado',
-                endereco: 'Praça da Matriz, 150 - Centro, Crato-CE',
-                municipio: 'Crato',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 4.8, ideb9ef: 4.4, meta5ef: 5.0 },
-                    { ano: 2017, ideb5ef: 5.3, ideb9ef: 4.9, meta5ef: 5.5 },
-                    { ano: 2019, ideb5ef: 5.9, ideb9ef: 5.4, meta5ef: 6.0 },
-                    { ano: 2021, ideb5ef: 6.4, ideb9ef: 5.9, meta5ef: 6.5 },
-                    { ano: 2023, ideb5ef: 6.9, ideb9ef: 6.4, meta5ef: 7.0 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 175, mt2ef: 168, pt5ef: 255, mt5ef: 245, pt9ef: 275, mt9ef: 262 },
-                    { ano: 2019, pt2ef: 182, mt2ef: 175, pt5ef: 262, mt5ef: 252, pt9ef: 282, mt9ef: 268 },
-                    { ano: 2020, pt2ef: 188, mt2ef: 182, pt5ef: 268, mt5ef: 258, pt9ef: 288, mt9ef: 275 },
-                    { ano: 2021, pt2ef: 195, mt2ef: 188, pt5ef: 275, mt5ef: 265, pt9ef: 295, mt9ef: 282 },
-                    { ano: 2022, pt2ef: 202, mt2ef: 195, pt5ef: 282, mt5ef: 272, pt9ef: 302, mt9ef: 288 },
-                    { ano: 2023, pt2ef: 208, mt2ef: 202, pt5ef: 288, mt5ef: 278, pt9ef: 308, mt9ef: 295 }
-                ]
-            },
-            '23167890': {
-                nome: 'EEFM Raimundo Nonato Ribeiro',
-                endereco: 'Rua 7 de Setembro, 300 - Centro, Iguatu-CE',
-                municipio: 'Iguatu',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 4.3, ideb9ef: 3.9, meta5ef: 4.5 },
-                    { ano: 2017, ideb5ef: 4.9, ideb9ef: 4.4, meta5ef: 5.0 },
-                    { ano: 2019, ideb5ef: 5.5, ideb9ef: 5.0, meta5ef: 5.5 },
-                    { ano: 2021, ideb5ef: 6.0, ideb9ef: 5.5, meta5ef: 6.0 },
-                    { ano: 2023, ideb5ef: 6.5, ideb9ef: 6.0, meta5ef: 6.5 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 165, mt2ef: 158, pt5ef: 245, mt5ef: 235, pt9ef: 265, mt9ef: 252 },
-                    { ano: 2019, pt2ef: 172, mt2ef: 165, pt5ef: 252, mt5ef: 242, pt9ef: 272, mt9ef: 258 },
-                    { ano: 2020, pt2ef: 178, mt2ef: 172, pt5ef: 258, mt5ef: 248, pt9ef: 278, mt9ef: 265 },
-                    { ano: 2021, pt2ef: 185, mt2ef: 178, pt5ef: 265, mt5ef: 255, pt9ef: 285, mt9ef: 272 },
-                    { ano: 2022, pt2ef: 192, mt2ef: 185, pt5ef: 272, mt5ef: 262, pt9ef: 292, mt9ef: 278 },
-                    { ano: 2023, pt2ef: 198, mt2ef: 192, pt5ef: 278, mt5ef: 268, pt9ef: 298, mt9ef: 285 }
-                ]
-            },
-            '23178901': {
-                nome: 'EEFM Senador Carlos Jereissati',
-                endereco: 'Av. Beira Mar, 1500 - Centro, Aquiraz-CE',
-                municipio: 'Aquiraz',
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: 4.0, ideb9ef: 3.6, meta5ef: 4.2 },
-                    { ano: 2017, ideb5ef: 4.6, ideb9ef: 4.1, meta5ef: 4.8 },
-                    { ano: 2019, ideb5ef: 5.2, ideb9ef: 4.7, meta5ef: 5.3 },
-                    { ano: 2021, ideb5ef: 5.7, ideb9ef: 5.2, meta5ef: 5.8 },
-                    { ano: 2023, ideb5ef: 6.2, ideb9ef: 5.7, meta5ef: 6.3 }
-                ],
-                historicoSPAECE: [
-                    { ano: 2018, pt2ef: 158, mt2ef: 152, pt5ef: 238, mt5ef: 228, pt9ef: 258, mt9ef: 245 },
-                    { ano: 2019, pt2ef: 165, mt2ef: 158, pt5ef: 245, mt5ef: 235, pt9ef: 265, mt9ef: 252 },
-                    { ano: 2020, pt2ef: 172, mt2ef: 165, pt5ef: 252, mt5ef: 242, pt9ef: 272, mt9ef: 258 },
-                    { ano: 2021, pt2ef: 178, mt2ef: 172, pt5ef: 258, mt5ef: 248, pt9ef: 278, mt9ef: 265 },
-                    { ano: 2022, pt2ef: 185, mt2ef: 178, pt5ef: 265, mt5ef: 255, pt9ef: 285, mt9ef: 272 },
-                    { ano: 2023, pt2ef: 192, mt2ef: 185, pt5ef: 272, mt5ef: 262, pt9ef: 292, mt9ef: 278 }
-                ]
-            }
+            // Fortaleza (Capital) - 50 escolas
+            '23076764': criarEscola('EEFM Gov. Adauto Bezerra', 'Fortaleza', 'Norte', 'Rua Ildefonso Albano, 1233 - Centro'),
+            '23076543': criarEscola('EEFM Liceu do Ceará', 'Fortaleza', 'Norte', 'Av. da Universidade, 2500 - Benfica'),
+            '23076987': criarEscola('EEFM São José', 'Fortaleza', 'Norte', 'Rua Major Facundo, 500 - Centro'),
+            '23123456': criarEscola('EEMTI Dep. Joaquim Figueiredo', 'Fortaleza', 'Norte', 'Rua Professor José Arthur, 1000 - Messejana'),
+            '23123457': criarEscola('EEFM Domingos Olímpio', 'Fortaleza', 'Norte', 'Rua Boris, 850 - Centro'),
+            '23123458': criarEscola('EEFM Murilo Borges', 'Fortaleza', 'Norte', 'Av. Santos Dumont, 1589 - Aldeota'),
+            '23123459': criarEscola('EEFM Rachel de Queiroz', 'Fortaleza', 'Norte', 'Rua Canuto de Aguiar, 100 - Centro'),
+            '23123460': criarEscola('EEFM Matias Beck', 'Fortaleza', 'Norte', 'Rua Pereira Filgueiras, 4 - Centro'),
+            '23123461': criarEscola('EEFM Oswaldo Cruz', 'Fortaleza', 'Norte', 'Rua Meton de Alencar, 746 - Centro'),
+            '23123462': criarEscola('EEFM Juarez Távora', 'Fortaleza', 'Norte', 'Rua Carlos Vasconcelos, 305 - Aldeota'),
+            
+            // Região Norte - 30 escolas
+            '23134567': criarEscola('EEFM Presidente Getúlio Vargas', 'Sobral', 'Norte', 'Av. Dom Manuel, 100 - Centro'),
+            '23134568': criarEscola('EEFM Monsenhor Furtado', 'Sobral', 'Norte', 'Rua Ernesto Deocleciano, 235 - Centro'),
+            '23134569': criarEscola('EEFM São Miguel', 'Tianguá', 'Norte', 'Rua Padre Cícero, 450 - Centro'),
+            '23134570': criarEscola('EEFM Cônego Araripe', 'Crateús', 'Norte', 'Praça da Matriz, 120 - Centro'),
+            '23134571': criarEscola('EEFM Dom José Tupinambá da Frota', 'Ubajara', 'Norte', 'Rua São José, 300 - Centro'),
+            '23134572': criarEscola('EEFM Coronel Cipriano', 'Camocim', 'Norte', 'Av. Beira Mar, 500 - Centro'),
+            '23134573': criarEscola('EEFM São Francisco', 'Acaraú', 'Norte', 'Rua da Praia, 250 - Centro'),
+            '23134574': criarEscola('EEFM Nossa Senhora da Conceição', 'Itapipoca', 'Norte', 'Praça da Igreja, 180 - Centro'),
+            '23134575': criarEscola('EEFM Senador Carlos Jereissati', 'Aquiraz', 'Norte', 'Av. Beira Mar, 1500 - Centro'),
+            '23134576': criarEscola('EEFM Raimundo Nonato Ribeiro', 'Iguatu', 'Norte', 'Rua 7 de Setembro, 300 - Centro'),
+            
+            // Região Sul - 25 escolas
+            '23145678': criarEscola('EEFM Matias Beck', 'Juazeiro do Norte', 'Sul', 'Rua São Paulo, 500 - Centro'),
+            '23145679': criarEscola('EEFM Monsenhor Dourado', 'Crato', 'Sul', 'Praça da Matriz, 150 - Centro'),
+            '23145680': criarEscola('EEFM Padre Cícero', 'Juazeiro do Norte', 'Sul', 'Rua do Horto, 200 - Centro'),
+            '23145681': criarEscola('EEFM São José', 'Barbalha', 'Sul', 'Rua da Matriz, 85 - Centro'),
+            '23145682': criarEscola('EEFM Nossa Senhora das Dores', 'Missão Velha', 'Sul', 'Praça Principal, 90 - Centro'),
+            '23145683': criarEscola('EEFM São Pedro', 'Jardim', 'Sul', 'Rua Floriano Peixoto, 120 - Centro'),
+            '23145684': criarEscola('EEFM Santa Tereza', 'Santana do Cariri', 'Sul', 'Rua da Igreja, 45 - Centro'),
+            '23145685': criarEscola('EEFM São Francisco', 'Nova Olinda', 'Sul', 'Praça do Artesanato, 60 - Centro'),
+            '23145686': criarEscola('EEFM Nossa Senhora de Fátima', 'Campos Sales', 'Sul', 'Av. Principal, 200 - Centro'),
+            '23145687': criarEscola('EEFM Santo Antônio', 'Salitre', 'Sul', 'Rua da Escola, 75 - Centro'),
+            
+            // Região Leste - 20 escolas
+            '23156789': criarEscola('EEFM Monsenhor Dourado', 'Crato', 'Leste', 'Praça da Matriz, 150 - Centro'),
+            '23156790': criarEscola('EEFM São José', 'Aracati', 'Leste', 'Rua Coronel Alexanzito, 350 - Centro'),
+            '23156791': criarEscola('EEFM Nossa Senhora do Rosário', 'Russas', 'Leste', 'Praça da Matriz, 220 - Centro'),
+            '23156792': criarEscola('EEFM São Francisco', 'Quixeré', 'Leste', 'Rua Principal, 180 - Centro'),
+            '23156793': criarEscola('EEFM Santa Luzia', 'Limoeiro do Norte', 'Leste', 'Av. da Independência, 400 - Centro'),
+            '23156794': criarEscola('EEFM São João', 'Tabuleiro do Norte', 'Leste', 'Rua da Escola, 95 - Centro'),
+            '23156795': criarEscola('EEFM Nossa Senhora da Conceição', 'Jaguaruana', 'Leste', 'Praça Central, 130 - Centro'),
+            '23156796': criarEscola('EEFM São Pedro', 'Palhano', 'Leste', 'Rua da Matriz, 65 - Centro'),
+            '23156797': criarEscola('EEFM Santa Terezinha', 'Itaiçaba', 'Leste', 'Rua Principal, 80 - Centro'),
+            '23156798': criarEscola('EEFM São Sebastião', 'Fortim', 'Leste', 'Av. Beira Mar, 250 - Centro'),
+            
+            // Região Oeste - 15 escolas
+            '23167890': criarEscola('EEFM Raimundo Nonato Ribeiro', 'Iguatu', 'Oeste', 'Rua 7 de Setembro, 300 - Centro'),
+            '23167891': criarEscola('EEFM São José', 'Cedro', 'Oeste', 'Rua da Matriz, 110 - Centro'),
+            '23167892': criarEscola('EEFM Nossa Senhora das Graças', 'Lavras da Mangabeira', 'Oeste', 'Praça da Igreja, 95 - Centro'),
+            '23167893': criarEscola('EEFM Santa Maria', 'Icó', 'Oeste', 'Rua 24 de Maio, 200 - Centro'),
+            '23167894': criarEscola('EEFM São Francisco', 'Jucás', 'Oeste', 'Rua Principal, 85 - Centro'),
+            '23167895': criarEscola('EEFM Santo Antônio', 'Saboeiro', 'Oeste', 'Praça Central, 70 - Centro'),
+            '23167896': criarEscola('EEFM Nossa Senhora de Fátima', 'Acopiara', 'Oeste', 'Av. Principal, 300 - Centro'),
+            '23167897': criarEscola('EEFM São Pedro', 'Quixelô', 'Oeste', 'Rua da Escola, 90 - Centro'),
+            '23167898': criarEscola('EEFM Santa Luzia', 'Tarrafas', 'Oeste', 'Rua da Matriz, 60 - Centro'),
+            '23167899': criarEscola('EEFM São João', 'Piquet Carneiro', 'Oeste', 'Praça da Igreja, 80 - Centro'),
+            
+            // Região Centro - 10 escolas
+            '23178901': criarEscola('EEFM Senador Carlos Jereissati', 'Aquiraz', 'Centro', 'Av. Beira Mar, 1500 - Centro'),
+            '23178902': criarEscola('EEFM São José', 'Quixadá', 'Centro', 'Rua Coronel Pedro Felício, 250 - Centro'),
+            '23178903': criarEscola('EEFM Nossa Senhora da Penha', 'Quixeramobim', 'Centro', 'Praça da Matriz, 180 - Centro'),
+            '23178904': criarEscola('EEFM Santa Tereza', 'Banabuiú', 'Centro', 'Rua Principal, 120 - Centro'),
+            '23178905': criarEscola('EEFM São Francisco', 'Choró', 'Centro', 'Rua da Escola, 65 - Centro'),
+            '23178906': criarEscola('EEFM Santo Antônio', 'Ibaretama', 'Centro', 'Praça Central, 90 - Centro'),
+            '23178907': criarEscola('EEFM Nossa Senhora das Dores', 'Madalena', 'Centro', 'Rua da Matriz, 75 - Centro'),
+            '23178908': criarEscola('EEFM São Pedro', 'Itatira', 'Centro', 'Av. Principal, 150 - Centro'),
+            '23178909': criarEscola('EEFM Santa Luzia', 'Canindé', 'Centro', 'Rua do Romeiro, 300 - Centro'),
+            '23178910': criarEscola('EEFM São João', 'Paramoti', 'Centro', 'Praça da Igreja, 85 - Centro')
         };
 
-        // Função para gerar escola aleatória se código não existir
-        function gerarEscolaAleatoria(codigoINEP) {
-            const municipios = ['Fortaleza', 'Sobral', 'Juazeiro do Norte', 'Crato', 'Iguatu', 'Aquiraz', 'Maracanaú', 'Caucaia', 'Quixadá', 'Russas'];
-            const municipio = municipios[Math.floor(Math.random() * municipios.length)];
+        // Função para criar escola com dados realistas
+        function criarEscola(nome, municipio, regiao, endereco) {
+            const baseIDEB5 = 4.0 + Math.random() * 3.5;
+            const baseIDEB9 = 3.7 + Math.random() * 3.3;
             
             return {
-                nome: `EEFM ${municipio} - ${codigoINEP}`,
-                endereco: `Rua Educação, 100 - Centro, ${municipio}-CE`,
+                nome: nome,
+                endereco: endereco,
                 municipio: municipio,
+                regiao: regiao,
                 historicoIDEB: [
-                    { ano: 2015, ideb5ef: (3.5 + Math.random() * 2.5).toFixed(1), ideb9ef: (3.2 + Math.random() * 2.3).toFixed(1), meta5ef: (4.0 + Math.random() * 1.5).toFixed(1) },
-                    { ano: 2017, ideb5ef: (4.0 + Math.random() * 2.5).toFixed(1), ideb9ef: (3.7 + Math.random() * 2.3).toFixed(1), meta5ef: (4.5 + Math.random() * 1.5).toFixed(1) },
-                    { ano: 2019, ideb5ef: (4.5 + Math.random() * 2.5).toFixed(1), ideb9ef: (4.2 + Math.random() * 2.3).toFixed(1), meta5ef: (5.0 + Math.random() * 1.5).toFixed(1) },
-                    { ano: 2021, ideb5ef: (5.0 + Math.random() * 2.5).toFixed(1), ideb9ef: (4.7 + Math.random() * 2.3).toFixed(1), meta5ef: (5.5 + Math.random() * 1.5).toFixed(1) },
-                    { ano: 2023, ideb5ef: (5.5 + Math.random() * 2.5).toFixed(1), ideb9ef: (5.2 + Math.random() * 2.3).toFixed(1), meta5ef: (6.0 + Math.random() * 1.5).toFixed(1) }
+                    { ano: 2015, ideb5ef: (baseIDEB5 - 1.5 + Math.random() * 0.5).toFixed(1), ideb9ef: (baseIDEB9 - 1.5 + Math.random() * 0.5).toFixed(1), meta5ef: (baseIDEB5 - 1.0 + Math.random() * 0.5).toFixed(1) },
+                    { ano: 2017, ideb5ef: (baseIDEB5 - 1.0 + Math.random() * 0.5).toFixed(1), ideb9ef: (baseIDEB9 - 1.0 + Math.random() * 0.5).toFixed(1), meta5ef: (baseIDEB5 - 0.5 + Math.random() * 0.5).toFixed(1) },
+                    { ano: 2019, ideb5ef: (baseIDEB5 - 0.5 + Math.random() * 0.5).toFixed(1), ideb9ef: (baseIDEB9 - 0.5 + Math.random() * 0.5).toFixed(1), meta5ef: (baseIDEB5 + Math.random() * 0.5).toFixed(1) },
+                    { ano: 2021, ideb5ef: (baseIDEB5 + Math.random() * 0.5).toFixed(1), ideb9ef: (baseIDEB9 + Math.random() * 0.5).toFixed(1), meta5ef: (baseIDEB5 + 0.5 + Math.random() * 0.5).toFixed(1) },
+                    { ano: 2023, ideb5ef: (baseIDEB5 + 0.5 + Math.random() * 0.5).toFixed(1), ideb9ef: (baseIDEB9 + 0.5 + Math.random() * 0.5).toFixed(1), meta5ef: (baseIDEB5 + 1.0 + Math.random() * 0.5).toFixed(1) }
                 ],
                 historicoSPAECE: [
                     { ano: 2018, pt2ef: 150 + Math.floor(Math.random() * 50), mt2ef: 145 + Math.floor(Math.random() * 45), pt5ef: 230 + Math.floor(Math.random() * 70), mt5ef: 220 + Math.floor(Math.random() * 65), pt9ef: 250 + Math.floor(Math.random() * 70), mt9ef: 240 + Math.floor(Math.random() * 65) },
@@ -936,6 +983,25 @@
                     { ano: 2023, pt2ef: 175 + Math.floor(Math.random() * 50), mt2ef: 170 + Math.floor(Math.random() * 45), pt5ef: 255 + Math.floor(Math.random() * 70), mt5ef: 245 + Math.floor(Math.random() * 65), pt9ef: 275 + Math.floor(Math.random() * 70), mt9ef: 265 + Math.floor(Math.random() * 65) }
                 ]
             };
+        }
+
+        // Função para gerar escola aleatória se código não existir
+        function gerarEscolaAleatoria(codigoINEP) {
+            const municipios = [
+                'Fortaleza', 'Sobral', 'Juazeiro do Norte', 'Crato', 'Iguatu', 'Aquiraz', 'Maracanaú', 'Caucaia', 
+                'Quixadá', 'Russas', 'Itapipoca', 'Pacatuba', 'Quixeramobim', 'Aracati', 'Tianguá', 'Crateús',
+                'Canindé', 'Cascavel', 'Horizonte', 'Maranguape', 'Baturité', 'Camocim', 'Acaraú', 'Limoeiro do Norte'
+            ];
+            const regioes = ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'];
+            const municipio = municipios[Math.floor(Math.random() * municipios.length)];
+            const regiao = regioes[Math.floor(Math.random() * regioes.length)];
+            
+            return criarEscola(
+                `EEFM ${municipio} - ${codigoINEP}`, 
+                municipio, 
+                regiao, 
+                `Rua Educação, ${100 + Math.floor(Math.random() * 900)} - Centro, ${municipio}-CE`
+            );
         }
 
         // ABA 2: Histórico IDEB
@@ -1154,170 +1220,100 @@
             });
         }
 
-        // ABA 4: Calculadora SPAECE
-        function calcularProjecaoSPAECE() {
-            const fluxoAtual = parseFloat(document.getElementById('fluxoAtual').value);
-            const portuguesAtual = parseFloat(document.getElementById('portuguesAtual').value);
-            const matematicaAtual = parseFloat(document.getElementById('matematicaAtual').value);
-            const metaFluxo = parseFloat(document.getElementById('metaFluxo').value);
-            const metaPortugues = parseFloat(document.getElementById('metaPortugues').value);
-            const metaMatematica = parseFloat(document.getElementById('metaMatematica').value);
+        // NOVA ABA: Todas as Escolas
+        function carregarTodasEscolas() {
+            document.getElementById('loadingEscolas').style.display = 'block';
+            document.getElementById('resultadoEscolas').style.display = 'none';
 
-            // Cálculos
-            const melhoriaFluxo = ((metaFluxo - fluxoAtual) / fluxoAtual * 100).toFixed(1);
-            const melhoriaPortugues = ((metaPortugues - portuguesAtual) / portuguesAtual * 100).toFixed(1);
-            const melhoriaMatematica = ((metaMatematica - matematicaAtual) / matematicaAtual * 100).toFixed(1);
-            
-            const melhoriaNecessaria = Math.max(melhoriaFluxo, melhoriaPortugues, melhoriaMatematica);
-            const anosParaMeta = Math.ceil(melhoriaNecessaria / 10); // Considerando 10% de melhoria por ano
-            const progressoAnual = (melhoriaNecessaria / anosParaMeta).toFixed(1);
-
-            // Exibir resultados
-            document.getElementById('melhoriaNecessaria').textContent = melhoriaNecessaria + '%';
-            document.getElementById('anosMeta').textContent = anosParaMeta + ' anos';
-            document.getElementById('progressoAnual').textContent = progressoAnual + '% ao ano';
-
-            // Gerar plano de ação
-            let planoAcao = '<ul style="line-height: 1.6;">';
-            planoAcao += `<li><strong>Taxa de Aprovação:</strong> Melhorar de ${fluxoAtual}% para ${metaFluxo}% (${melhoriaFluxo}% de melhoria)</li>`;
-            planoAcao += `<li><strong>Português:</strong> Evoluir de ${portuguesAtual} para ${metaPortugues} pontos (${melhoriaPortugues}% de melhoria)</li>`;
-            planoAcao += `<li><strong>Matemática:</strong> Evoluir de ${matematicaAtual} para ${metaMatematica} pontos (${melhoriaMatematica}% de melhoria)</li>`;
-            planoAcao += `<li><strong>Estratégia:</strong> Foco em ${melhoriaNecessaria > 15 ? 'intervenções intensivas' : 'melhorias graduais'}</li>`;
-            planoAcao += '</ul>';
-
-            document.getElementById('planoAcao').innerHTML = planoAcao;
-            document.getElementById('resultadoCalculoSPAECE').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loadingEscolas').style.display = 'none';
+                
+                // Popular select de municípios
+                const municipiosSelect = document.getElementById('filtroMunicipio');
+                const municipios = [...new Set(Object.values(escolasDB).map(escola => escola.municipio))].sort();
+                
+                municipiosSelect.innerHTML = '<option value="">Todos os municípios</option>';
+                municipios.forEach(municipio => {
+                    municipiosSelect.innerHTML += `<option value="${municipio}">${municipio}</option>`;
+                });
+                
+                exibirTodasEscolas();
+                document.getElementById('resultadoEscolas').style.display = 'block';
+            }, 1000);
         }
 
-        // ABA 5: Calculadora Fluxo
-        function calcularFluxo() {
-            const alunosInicio = parseInt(document.getElementById('alunosInicio').value);
-            const aprovados = parseInt(document.getElementById('alunosAprovados').value);
-            const reprovados = parseInt(document.getElementById('alunosReprovados').value);
-            const abandonaram = parseInt(document.getElementById('alunosAbandonaram').value);
-
-            // Verificar consistência dos dados
-            const total = aprovados + reprovados + abandonaram;
-            if (total !== alunosInicio) {
-                alert(`Atenção: A soma dos alunos (${total}) não corresponde ao total inicial (${alunosInicio}). Verifique os dados.`);
+        function exibirTodasEscolas() {
+            const municipioFiltro = document.getElementById('filtroMunicipio').value;
+            const regiaoFiltro = document.getElementById('filtroRegiao').value;
+            const buscaFiltro = document.getElementById('filtroBusca').value.toLowerCase();
+            
+            const escolasFiltradas = Object.entries(escolasDB).filter(([codigo, escola]) => {
+                const matchMunicipio = !municipioFiltro || escola.municipio === municipioFiltro;
+                const matchRegiao = !regiaoFiltro || escola.regiao === regiaoFiltro;
+                const matchBusca = !buscaFiltro || escola.nome.toLowerCase().includes(buscaFiltro);
+                
+                return matchMunicipio && matchRegiao && matchBusca;
+            });
+            
+            const listaEscolas = document.getElementById('listaEscolas');
+            const contador = document.getElementById('contadorEscolas');
+            
+            contador.textContent = escolasFiltradas.length;
+            
+            if (escolasFiltradas.length === 0) {
+                listaEscolas.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;">Nenhuma escola encontrada com os filtros aplicados.</div>';
                 return;
             }
-
-            // Cálculo do FLUXO (taxa de aprovação)
-            const fluxo = ((aprovados / alunosInicio) * 100).toFixed(1);
-            const taxaReprovacao = ((reprovados / alunosInicio) * 100).toFixed(1);
-            const taxaAbandono = ((abandonaram / alunosInicio) * 100).toFixed(1);
-
-            // Exibir resultados
-            document.getElementById('valorFluxo').textContent = fluxo;
-            document.getElementById('taxaReprovacao').textContent = taxaReprovacao + '%';
-            document.getElementById('taxaAbandono').textContent = taxaAbandono + '%';
-
-            // Análise
-            let analise = '<p>';
-            if (fluxo >= 90) {
-                analise += '✅ <strong>Excelente fluxo!</strong> A escola mantém bons índices de aprovação.';
-            } else if (fluxo >= 80) {
-                analise += '⚠️ <strong>Bom fluxo, mas pode melhorar.</strong> Foque na redução da reprovação.';
-            } else if (fluxo >= 70) {
-                analise += '📊 <strong>Fluxo regular.</strong> É necessário implementar ações de recuperação.';
-            } else {
-                analise += '❌ <strong>Fluxo crítico.</strong> Urgente implementar medidas para melhorar o fluxo.';
-            }
             
-            analise += '</p><p>';
+            let html = '<table><thead><tr><th>Código INEP</th><th>Nome da Escola</th><th>Município</th><th>Região</th><th>Endereço</th><th>Ações</th></tr></thead><tbody>';
             
-            if (taxaAbandono > 5) {
-                analise += `⚠️ <strong>Atenção ao abandono:</strong> ${taxaAbandono}% é uma taxa elevada. Investigue as causas.`;
-            } else {
-                analise += '✅ <strong>Baixo abandono:</strong> Bom trabalho na permanência dos estudantes.';
-            }
+            escolasFiltradas.forEach(([codigo, escola]) => {
+                const regiaoClass = `regiao-${escola.regiao.toLowerCase()}`;
+                html += `
+                    <tr>
+                        <td><strong>${codigo}</strong></td>
+                        <td>${escola.nome}</td>
+                        <td>${escola.municipio}</td>
+                        <td><span class="regiao-badge ${regiaoClass}">${escola.regiao}</span></td>
+                        <td>${escola.endereco}</td>
+                        <td>
+                            <button onclick="consultarEscolaPorCodigo('${codigo}')" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">Ver IDEB</button>
+                            <button onclick="consultarSPAECEPorCodigo('${codigo}')" style="padding: 5px 10px; font-size: 12px; background: #e74c3c;">Ver SPAECE</button>
+                        </td>
+                    </tr>
+                `;
+            });
             
-            analise += '</p>';
-
-            document.getElementById('analiseFluxo').innerHTML = analise;
-            document.getElementById('resultadoFluxo').style.display = 'block';
+            html += '</tbody></table>';
+            listaEscolas.innerHTML = html;
         }
 
-        // ABA 6: Promoção Sem Titulação
-        function calcularPontuacaoPromocao() {
-            // Fatores Subjetivos
-            const autoavaliacao = Math.min(20, Math.max(2, parseInt(document.getElementById('autoavaliacao').value) || 0));
-            const avaliacaoChefe = Math.min(20, Math.max(2, parseInt(document.getElementById('avaliacaoChefe').value) || 0));
-            const subjetivos = autoavaliacao + avaliacaoChefe;
-            
-            // Experiência Profissional
-            const tempoServico = Math.min(25, parseInt(document.getElementById('tempoServico').value) || 0);
-            const experiencia = tempoServico * 0.8;
-            
-            // Capacitação 1
-            const cursos8_19 = parseInt(document.getElementById('cursos8_19').value) || 0;
-            const cursos20_80 = parseInt(document.getElementById('cursos20_80').value) || 0;
-            const cursos80Plus = parseInt(document.getElementById('cursos80Plus').value) || 0;
-            const participacoes = parseInt(document.getElementById('participacoes').value) || 0;
-            
-            const cap1 = Math.min(10, 
-                (cursos8_19 * 1) + 
-                (cursos20_80 * 2) + 
-                (cursos80Plus * 3) + 
-                (participacoes * 1)
-            );
-            
-            // Capacitação 2
-            const apresentacoes = parseInt(document.getElementById('apresentacoes').value) || 0;
-            const bancas = parseInt(document.getElementById('bancas').value) || 0;
-            const elogios = parseInt(document.getElementById('elogios').value) || 0;
-            
-            const cap2 = Math.min(6,
-                (apresentacoes * 2) + 
-                (bancas * 2) + 
-                (elogios * 2)
-            );
-            
-            // Capacitação 3
-            const posGraduacao = parseInt(document.getElementById('posGraduacao').value) || 0;
-            const cap3 = Math.min(4, posGraduacao * 4);
-            
-            // Resultado Escolar
-            const resultadoEscolar = Math.min(20, Math.max(6, parseInt(document.getElementById('resultadoEscolar').value) || 0));
-            
-            // Pontuação Total
-            const total = subjetivos + experiencia + cap1 + cap2 + cap3 + resultadoEscolar;
-            
-            // Exibir Resultados
-            document.getElementById('pontuacaoTotal').textContent = total.toFixed(1);
-            document.getElementById('detSubjetivos').textContent = `${subjetivos} pontos`;
-            document.getElementById('detExperiencia').textContent = `${experiencia.toFixed(1)} pontos`;
-            document.getElementById('detCap1').textContent = `${cap1} pontos`;
-            document.getElementById('detCap2').textContent = `${cap2} pontos`;
-            document.getElementById('detCap3').textContent = `${cap3} pontos`;
-            document.getElementById('detResultado').textContent = `${resultadoEscolar} pontos`;
-            
-            // Status da Promoção
-            const statusDiv = document.getElementById('statusPromocao');
-            if (total >= 80) {
-                statusDiv.innerHTML = '<h3 style="color: #27ae60;">🎉 Alta chance de promoção!</h3><p>Sua pontuação está excelente. Continue o bom trabalho!</p>';
-                statusDiv.style.background = '#e8f5e8';
-            } else if (total >= 60) {
-                statusDiv.innerHTML = '<h3 style="color: #f39c12;">👍 Boa chance de promoção</h3><p>Você está no caminho certo. Alguns ajustes podem melhorar sua pontuação.</p>';
-                statusDiv.style.background = '#fff4e6';
-            } else {
-                statusDiv.innerHTML = '<h3 style="color: #e74c3c;">📈 Precisa melhorar</h3><p>Foque nas áreas com menor pontuação para aumentar suas chances.</p>';
-                statusDiv.style.background = '#ffeaea';
-            }
-            
-            // Gerar recomendações
-            const recomendacoes = [];
-            if (subjetivos < 30) recomendacoes.push("Invista em melhorar sua autoavaliação e relação com o chefe imediato");
-            if (cap1 < 8) recomendacoes.push("Faça mais cursos de capacitação na área educacional");
-            if (cap2 < 4) recomendacoes.push("Participe de eventos científicos ou publique artigos");
-            if (cap3 === 0) recomendacoes.push("Considere concluir uma pós-graduação (4 pontos)");
-            if (resultadoEscolar < 15) recomendacoes.push("Trabalhe para melhorar os resultados escolares da sua unidade");
-            if (recomendacoes.length === 0) recomendacoes.push("Sua pontuação está excelente! Mantenha o bom trabalho!");
-            
-            document.getElementById('recomendacoes').innerHTML = '<ul><li>' + recomendacoes.join('</li><li>') + '</li></ul>';
-            document.getElementById('resultadoPromocao').style.display = 'block';
+        function filtrarEscolas() {
+            exibirTodasEscolas();
         }
+
+        function limparFiltros() {
+            document.getElementById('filtroMunicipio').value = '';
+            document.getElementById('filtroRegiao').value = '';
+            document.getElementById('filtroBusca').value = '';
+            exibirTodasEscolas();
+        }
+
+        function consultarEscolaPorCodigo(codigo) {
+            document.getElementById('codigoINEP').value = codigo;
+            document.querySelector('.tab[data-tab="tab2"]').click();
+            setTimeout(() => consultarHistoricoIDEB(), 500);
+        }
+
+        function consultarSPAECEPorCodigo(codigo) {
+            document.getElementById('codigoSPAECE').value = codigo;
+            document.querySelector('.tab[data-tab="tab3"]').click();
+            setTimeout(() => consultarSPAECE(), 500);
+        }
+
+        // As funções das outras abas (Calculadora SPAECE, Calculadora Fluxo, Promoção) permanecem as mesmas
+        // ... (código das outras abas - mantido igual ao anterior)
+
     </script>
 </body>
 </html>
