@@ -6,6 +6,7 @@
     <title>Sistema de Avaliações Educacionais</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ESTILOS (MANTIDOS E OTIMIZADOS) */
         :root {
             --primary: #2c3e50;
             --secondary: #3498db;
@@ -166,26 +167,6 @@
         .card:hover {
             transform: translateY(-5px);
         }
-        .card-title {
-            font-size: 14px;
-            color: var(--gray);
-            margin-bottom: 10px;
-        }
-        .card-value {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .card-footer {
-            font-size: 12px;
-            color: var(--gray);
-        }
-        .card-footer.positive {
-            color: var(--success);
-        }
-        .card-footer.negative {
-            color: var(--warning);
-        }
         /* Tables */
         .table-container {
             overflow-x: auto;
@@ -230,7 +211,7 @@
         }
         /* Charts */
         .chart-container {
-            height: 300px;
+            height: 350px; /* Aumentado para melhor visualização */
             margin-top: 20px;
         }
         /* Loading and Error States */
@@ -239,21 +220,20 @@
             padding: 20px;
             display: none;
         }
-        .error {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        /* Mini Bio */
         .mini-bio {
             background: #fff3cd;
             border: 2px solid #ffc107;
             border-radius: 10px;
             padding: 20px;
             margin-top: 30px;
+        }
+        .success-status {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        .fail-status {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--warning);
         }
         /* Responsive */
         @media (max-width: 768px) {
@@ -296,7 +276,6 @@
                 </div>
             </div>
         </header>
-        <!-- Tabs Navigation -->
         <div class="tabs">
             <div class="tab active" data-tab="tab1">Avaliações Externas</div>
             <div class="tab" data-tab="tab2">Histórico IDEB</div>
@@ -306,10 +285,9 @@
             <div class="tab" data-tab="tab6">Projeção do IDEB</div>
             <div class="tab" data-tab="tab7">Promoção Sem Titulação</div>
         </div>
-        <!-- ABA 1: Avaliações Externas -->
         <div class="tab-content active" id="tab1">
             <h2 class="tab-title">Avaliações Externas da Educação Básica</h2>
-            <div class="card">
+            <div class="card" style="margin-bottom: 20px;">
                 <h3>O que são Avaliações Externas?</h3>
                 <p>As avaliações externas são instrumentos importantes para diagnosticar a qualidade da educação brasileira. Elas fornecem dados sobre o desempenho dos estudantes e ajudam na formulação de políticas públicas educacionais.</p>
             </div>
@@ -348,17 +326,6 @@
                     </table>
                 </div>
             </div>
-            <div class="card">
-                <h3>Importância das Avaliações</h3>
-                <ul style="padding-left: 20px; line-height: 1.8;">
-                    <li>Fornecem diagnóstico preciso da educação</li>
-                    <li>Orienta políticas públicas educacionais</li>
-                    <li>Auxiliam no planejamento pedagógico</li>
-                    <li>Permitem acompanhar a evolução da qualidade</li>
-                    <li>Identificam desigualdades educacionais</li>
-                </ul>
-            </div>
-            <!-- MINI BIO ATUALIZADA -->
             <div class="mini-bio">
                 <h3>👨‍🏫 Fernando Mário da Silva Martins</h3>
                 <p><strong>Superintendente Escolar na Sefor 3 / Seduc-CE</strong></p>
@@ -370,14 +337,13 @@
                 </ul>
             </div>
         </div>
-        <!-- ABA 2: Histórico IDEB -->
         <div class="tab-content" id="tab2">
             <h2 class="tab-title">Histórico do IDEB por Escola</h2>
             <div class="card">
                 <h3>Consultar Histórico IDEB</h3>
                 <div class="form-group">
-                    <label for="codigoINEP">Código INEP da Escola:</label>
-                    <input type="text" id="codigoINEP" placeholder="Ex: 23060948 (EEM LIA SIDOU)" maxlength="8">
+                    <label for="codigoINEP">Código INEP da Escola (8 dígitos):</label>
+                    <input type="text" id="codigoINEP" placeholder="Tente: 23060948 (LIA SIDOU)" maxlength="8">
                 </div>
                 <button onclick="consultarHistoricoIDEB()">Consultar Histórico</button>
             </div>
@@ -385,7 +351,7 @@
                 <p>📊 Carregando dados do IDEB...</p>
             </div>
             <div class="resultado" id="resultadoIDEB" style="display: none;">
-                <div class="info-escola">
+                <div class="info-escola" style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 5px;">
                     <h3>🏫 Informações da Escola</h3>
                     <p><strong>Nome:</strong> <span id="nomeEscola">-</span></p>
                     <p><strong>Endereço:</strong> <span id="enderecoEscola">-</span></p>
@@ -399,9 +365,9 @@
                             <tr>
                                 <th>Ano</th>
                                 <th>IDEB 5º EF</th>
-                                <th>Nível</th>
+                                <th>Nível (5º)</th>
                                 <th>IDEB 9º EF</th>
-                                <th>Nível</th>
+                                <th>Nível (9º)</th>
                                 <th>Meta 5º EF</th>
                                 <th>Status</th>
                             </tr>
@@ -410,28 +376,26 @@
                         </tbody>
                     </table>
                 </div>
+                <h3>Gráfico de Desempenho</h3>
                 <div class="chart-container">
                     <canvas id="graficoIDEB"></canvas>
                 </div>
             </div>
         </div>
-        <!-- ABA 3: Histórico SPAECE -->
         <div class="tab-content" id="tab3">
             <h2 class="tab-title">Histórico SPAECE</h2>
             <div class="card">
                 <p>⚠️ Funcionalidade em desenvolvimento.</p>
-                <p>Em breve será possível consultar o histórico de desempenho no SPAECE por escola.</p>
+                <p>O histórico do SPAECE será inserido aqui quando o servidor (Backend) for implementado, pois é um banco de dados à parte do INEP.</p>
             </div>
         </div>
-        <!-- ABA 4: Calculadora SPAECE -->
         <div class="tab-content" id="tab4">
             <h2 class="tab-title">Calculadora SPAECE</h2>
             <div class="card">
                 <p>⚠️ Funcionalidade em desenvolvimento.</p>
-                <p>Esta ferramenta permitirá converter proficiência em nível do SPAECE.</p>
+                <p>Esta ferramenta permitirá converter a proficiência (pontos) em Nível do SPAECE (Adequado, Básico, etc.) para os 2º, 5º e 9º anos.</p>
             </div>
         </div>
-        <!-- ABA 5: Calculadora Fluxo -->
         <div class="tab-content" id="tab5">
             <h2 class="tab-title">Calculadora de Fluxo Escolar</h2>
             <div class="card">
@@ -472,27 +436,25 @@
                 </div>
                 <h4>Análise do Fluxo:</h4>
                 <div id="analiseFluxo" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
-                    <!-- Análise será gerada aqui -->
-                </div>
+                    </div>
             </div>
         </div>
-        <!-- ABA 6: PROJEÇÃO DO IDEB -->
         <div class="tab-content" id="tab6">
             <h2 class="tab-title">Projeção do IDEB Futuro</h2>
             <div class="card">
                 <h3>Como funciona?</h3>
-                <p>Esta ferramenta projeta o IDEB futuro com base nos últimos anos de desempenho. Utiliza uma média de crescimento linear para estimar os próximos valores.</p>
+                <p>Esta ferramenta projeta o IDEB futuro com base nos últimos anos de desempenho da escola consultada (Aba 2). Ela calcula a média de crescimento bienal e estima os próximos valores de forma linear.</p>
             </div>
             <div class="card">
                 <h3>Gerar Projeção</h3>
-                <p>Primeiro, consulte o <strong>Histórico IDEB</strong> (Aba 2) com um código INEP válido. Depois, clique no botão abaixo para gerar a projeção automática.</p>
+                <p><strong>ATENÇÃO:</strong> Primeiro, consulte o **Histórico IDEB** (Aba 2) com um código INEP válido (ex: 23060948). Depois, clique no botão abaixo para gerar a projeção automática.</p>
                 <button onclick="projetarIDEB()">Gerar Projeção do IDEB</button>
             </div>
             <div class="loading" id="loadingProjecao" style="display: none;">
                 <p>📈 Calculando projeção...</p>
             </div>
             <div class="resultado" id="resultadoProjecao" style="display: none;">
-                <h3>📊 Projeção do IDEB até 2031</h3>
+                <h3>📊 Projeção do IDEB 5º Ano (Anos Iniciais)</h3>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -500,19 +462,20 @@
                                 <th>Ano</th>
                                 <th>IDEB Projetado</th>
                                 <th>Nível</th>
+                                <th>Tipo</th>
                             </tr>
                         </thead>
                         <tbody id="tabelaProjecao"></tbody>
                     </table>
                 </div>
+                <h3>Gráfico da Projeção</h3>
                 <div class="chart-container">
                     <canvas id="graficoProjecao"></canvas>
                 </div>
             </div>
         </div>
-        <!-- ABA 7: Promoção Sem Titulação -->
         <div class="tab-content" id="tab7">
-            <h2 class="tab-title">Calculadora - Promoção Sem Titulação</h2>
+            <h2 class="tab-title">Calculadora - Promoção Sem Titulação (Exemplo Seduc-CE)</h2>
             <div class="card">
                 <h3>Calcular Pontuação para Promoção</h3>
                 <h4 style="margin: 20px 0 15px; color: #2c3e50;">Fatores Subjetivos (Máx. 40 pontos)</h4>
@@ -589,18 +552,62 @@
                     </ul>
                 </div>
                 <div id="statusPromocao" style="text-align: center; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <!-- Status será gerado aqui -->
-                </div>
+                    </div>
                 <h4>📋 Recomendações para Melhoria:</h4>
                 <div id="recomendacoes" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
-                    <!-- Recomendações serão geradas aqui -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
     <script>
-        // Sistema de Navegação por Abas
+        // Variáveis globais para os gráficos
+        let graficoIdebInstance = null;
+        let graficoProjecaoInstance = null;
+
+        // BANCO DE DADOS SIMULADO (para testes)
+        const bancoEscolas = {
+            "23060948": {
+                nome: "EEM LIA SIDOU",
+                municipio: "Aquiraz",
+                endereco: "RUA VIRGILIO COELHO, 693 - CENTRO",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: 4.2, ideb9ef: 3.9, meta5ef: 4.5 },
+                    { ano: 2017, ideb5ef: 4.6, ideb9ef: 4.1, meta5ef: 5.0 },
+                    { ano: 2019, ideb5ef: 5.1, ideb9ef: 4.7, meta5ef: 5.5 },
+                    { ano: 2021, ideb5ef: 5.6, ideb9ef: 5.2, meta5ef: 6.0 },
+                    { ano: 2023, ideb5ef: 6.0, ideb9ef: 5.7, meta5ef: 6.5 }
+                ]
+            },
+            "23061499": {
+                nome: "EEFM RAIMUNDO TOMAZ",
+                municipio: "Aquiraz",
+                endereco: "JOSE CARLOS GADELHA, 790 - TAPERA",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: 3.8, ideb9ef: 3.5, meta5ef: 4.5 },
+                    { ano: 2017, ideb5ef: 4.1, ideb9ef: 3.9, meta5ef: 5.0 },
+                    { ano: 2019, ideb5ef: 4.5, ideb9ef: 4.3, meta5ef: 5.5 },
+                    { ano: 2021, ideb5ef: 4.9, ideb9ef: 4.8, meta5ef: 6.0 },
+                    { ano: 2023, ideb5ef: 5.3, ideb9ef: 5.1, meta5ef: 6.5 }
+                ]
+            },
+            "23062126": {
+                nome: "EEM BRANCA CARNEIRO DE MENDONÇA",
+                municipio: "Caucaia",
+                endereco: "PRACA DA MATRIZ, 666 - CENTRO",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: 4.5, ideb9ef: 4.2, meta5ef: 4.5 },
+                    { ano: 2017, ideb5ef: 4.9, ideb9ef: 4.6, meta5ef: 5.0 },
+                    { ano: 2019, ideb5ef: 5.3, ideb9ef: 5.0, meta5ef: 5.5 },
+                    { ano: 2021, ideb5ef: 5.8, ideb9ef: 5.5, meta5ef: 6.0 },
+                    { ano: 2023, ideb5ef: 6.2, ideb9ef: 5.9, meta5ef: 6.5 }
+                ]
+            }
+        };
+
+        // --- FUNÇÕES GERAIS ---
+        
         document.addEventListener('DOMContentLoaded', function() {
+            // Sistema de Navegação por Abas
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -622,60 +629,17 @@
             document.getElementById('totalVisitas').textContent = visitas;
         }
 
-        // BANCO DE DADOS REALISTA COM ESCOLAS DO PDF
-        const bancoEscolas = {
-            "23060948": {
-                nome: "EEM LIA SIDOU",
-                municipio: "Aquiraz",
-                endereco: "RUA VIRGILIO COELHO, 693 - CENTRO",
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: "4.2", ideb9ef: "3.9", meta5ef: "4.5" },
-                    { ano: 2017, ideb5ef: "4.6", ideb9ef: "4.1", meta5ef: "5.0" },
-                    { ano: 2019, ideb5ef: "5.1", ideb9ef: "4.7", meta5ef: "5.5" },
-                    { ano: 2021, ideb5ef: "5.6", ideb9ef: "5.2", meta5ef: "6.0" },
-                    { ano: 2023, ideb5ef: "6.0", ideb9ef: "5.7", meta5ef: "6.5" }
-                ]
-            },
-            "23061499": {
-                nome: "EEFM RAIMUNDO TOMAZ",
-                municipio: "Aquiraz",
-                endereco: "JOSE CARLOS GADELHA, 790 - TAPERA",
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: "3.8", ideb9ef: "3.5", meta5ef: "4.5" },
-                    { ano: 2017, ideb5ef: "4.1", ideb9ef: "3.9", meta5ef: "5.0" },
-                    { ano: 2019, ideb5ef: "4.5", ideb9ef: "4.3", meta5ef: "5.5" },
-                    { ano: 2021, ideb5ef: "4.9", ideb9ef: "4.8", meta5ef: "6.0" },
-                    { ano: 2023, ideb5ef: "5.3", ideb9ef: "5.1", meta5ef: "6.5" }
-                ]
-            },
-            "23061545": {
-                nome: "EEFM TELINA MATOS PIRES",
-                municipio: "Aquiraz",
-                endereco: "RUA FRANCISCO CAMARA, 70 - CENTRO",
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: "4.0", ideb9ef: "3.7", meta5ef: "4.5" },
-                    { ano: 2017, ideb5ef: "4.4", ideb9ef: "4.0", meta5ef: "5.0" },
-                    { ano: 2019, ideb5ef: "4.8", ideb9ef: "4.5", meta5ef: "5.5" },
-                    { ano: 2021, ideb5ef: "5.2", ideb9ef: "5.0", meta5ef: "6.0" },
-                    { ano: 2023, ideb5ef: "5.7", ideb9ef: "5.4", meta5ef: "6.5" }
-                ]
-            },
-            "23062126": {
-                nome: "EEM BRANCA CARNEIRO DE MENDONÇA",
-                municipio: "Caucaia",
-                endereco: "PRACA DA MATRIZ, 666 - CENTRO",
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: "4.5", ideb9ef: "4.2", meta5ef: "4.5" },
-                    { ano: 2017, ideb5ef: "4.9", ideb9ef: "4.6", meta5ef: "5.0" },
-                    { ano: 2019, ideb5ef: "5.3", ideb9ef: "5.0", meta5ef: "5.5" },
-                    { ano: 2021, ideb5ef: "5.8", ideb9ef: "5.5", meta5ef: "6.0" },
-                    { ano: 2023, ideb5ef: "6.2", ideb9ef: "5.9", meta5ef: "6.5" }
-                ]
-            }
-            // Adicione mais escolas conforme necessário
-        };
+        // Função para obter o Badge de Nível (CSS)
+        function getNivelBadge(ideb) {
+            const valor = parseFloat(ideb);
+            if (valor < 4.0) return '<span class="nivel-badge nivel-abaixo">Muito Crítico</span>';
+            if (valor < 5.5) return '<span class="nivel-badge nivel-basico">Atenção</span>';
+            if (valor < 7.0) return '<span class="nivel-badge nivel-adequado">Adequado</span>';
+            return '<span class="nivel-badge nivel-desejavel">Desejável</span>';
+        }
 
-        // ABA 2: Histórico IDEB
+        // --- ABA 2: Histórico IDEB ---
+        
         function consultarHistoricoIDEB() {
             const codigoINEP = document.getElementById('codigoINEP').value.trim();
             if (!codigoINEP || codigoINEP.length !== 8 || isNaN(codigoINEP)) {
@@ -685,7 +649,7 @@
 
             const escola = bancoEscolas[codigoINEP];
             if (!escola) {
-                alert('Escola não encontrada. Tente um dos códigos de exemplo:\n• 23060948 (EEM LIA SIDOU)\n• 23061499 (EEFM RAIMUNDO TOMAZ)');
+                alert('Escola não encontrada. Tente um dos códigos de exemplo:\n• 23060948 (EEM LIA SIDOU)\n• 23061499 (EEFM RAIMUNDO TOMAZ)\n• 23062126 (EEM BRANCA)');
                 return;
             }
 
@@ -694,7 +658,7 @@
                 document.getElementById('loadingIDEB').style.display = 'none';
                 exibirDadosIDEB(escola, codigoINEP);
                 document.getElementById('resultadoIDEB').style.display = 'block';
-                // Salvar no localStorage para uso na projeção
+                // Salvar no localStorage para uso na projeção (Aba 6)
                 localStorage.setItem('historicoIDEBAtual', JSON.stringify(escola.historicoIDEB));
             }, 800);
         }
@@ -704,263 +668,334 @@
             document.getElementById('enderecoEscola').textContent = escola.endereco;
             document.getElementById('municipioEscola').textContent = escola.municipio;
             document.getElementById('codigoEscola').textContent = codigoINEP;
+
             const tbody = document.getElementById('tabelaIDEB');
             tbody.innerHTML = '';
+            
+            const anos = [];
+            const ideb5ef = [];
+            const metas5ef = [];
+
             escola.historicoIDEB.forEach(dado => {
-                const getNivel = (ideb) => {
-                    const valor = parseFloat(ideb);
-                    if (valor < 4.0) return '<span class="nivel-badge nivel-abaixo">Abaixo</span>';
-                    if (valor < 6.0) return '<span class="nivel-badge nivel-basico">Básico</span>';
-                    if (valor < 8.0) return '<span class="nivel-badge nivel-adequado">Adequado</span>';
-                    return '<span class="nivel-badge nivel-desejavel">Desejável</span>';
-                };
-                const status = parseFloat(dado.ideb5ef) >= parseFloat(dado.meta5ef) ? '✅ Meta Atingida' : '❌ Meta Não Atingida';
+                const status = dado.ideb5ef >= dado.meta5ef ? '<span style="color: var(--success); font-weight: bold;">✅ Meta Atingida</span>' : '<span style="color: var(--warning); font-weight: bold;">❌ Meta Não Atingida</span>';
+                
                 tbody.innerHTML += `
                     <tr>
                         <td>${dado.ano}</td>
-                        <td>${dado.ideb5ef}</td>
-                        <td>${getNivel(dado.ideb5ef)}</td>
-                        <td>${dado.ideb9ef}</td>
-                        <td>${getNivel(dado.ideb9ef)}</td>
-                        <td>${dado.meta5ef}</td>
+                        <td>${dado.ideb5ef.toFixed(1)}</td>
+                        <td>${getNivelBadge(dado.ideb5ef)}</td>
+                        <td>${dado.ideb9ef.toFixed(1)}</td>
+                        <td>${getNivelBadge(dado.ideb9ef)}</td>
+                        <td>${dado.meta5ef.toFixed(1)}</td>
                         <td>${status}</td>
                     </tr>
                 `;
+                
+                anos.push(dado.ano);
+                ideb5ef.push(dado.ideb5ef);
+                metas5ef.push(dado.meta5ef);
             });
-            criarGraficoIDEB(escola.historicoIDEB);
-        }
 
-        function criarGraficoIDEB(historico) {
-            const anos = historico.map(h => h.ano);
-            const ideb5ef = historico.map(h => parseFloat(h.ideb5ef));
-            const ideb9ef = historico.map(h => parseFloat(h.ideb9ef));
-            const metas = historico.map(h => parseFloat(h.meta5ef));
+            // Geração do Gráfico
+            if (graficoIdebInstance) {
+                graficoIdebInstance.destroy();
+            }
+
             const ctx = document.getElementById('graficoIDEB').getContext('2d');
-            if (window.graficoIDEB) window.graficoIDEB.destroy();
-            window.graficoIDEB = new Chart(ctx, {
+            graficoIdebInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: anos,
                     datasets: [
                         {
-                            label: 'IDEB 5º EF',
+                            label: 'IDEB 5º Ano (Resultado)',
                             data: ideb5ef,
-                            borderColor: '#3498db',
-                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            tension: 0.4,
-                            fill: true
+                            borderColor: 'var(--secondary)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                            fill: false,
+                            tension: 0.2
                         },
                         {
-                            label: 'IDEB 9º EF',
-                            data: ideb9ef,
-                            borderColor: '#e74c3c',
-                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        },
-                        {
-                            label: 'Meta 5º EF',
-                            data: metas,
-                            borderColor: '#27ae60',
+                            label: 'IDEB 5º Ano (Meta)',
+                            data: metas5ef,
+                            borderColor: 'var(--success)',
+                            backgroundColor: 'rgba(39, 174, 96, 0.2)',
                             borderDash: [5, 5],
-                            backgroundColor: 'transparent',
-                            tension: 0.4,
-                            fill: false
+                            fill: false,
+                            pointStyle: 'crossRot',
+                            pointRadius: 6
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        title: { display: true, text: 'Evolução do IDEB' }
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'IDEB'
+                            },
+                            min: 3.0,
+                            max: 7.0
+                        }
                     }
                 }
             });
         }
 
-        // ABA 6: Projeção do IDEB
-        function projetarIDEB() {
-            const historicoSalvo = localStorage.getItem('historicoIDEBAtual');
-            if (!historicoSalvo) {
-                alert('Primeiro consulte o Histórico IDEB (Aba 2) com um código INEP válido.');
-                return;
-            }
+        // --- ABA 5: Calculadora Fluxo ---
 
-            const historico = JSON.parse(historicoSalvo);
-            const valores = historico.map(h => parseFloat(h.ideb5ef));
-            const anosBase = historico.map(h => h.ano);
-            const anosProjetados = [2025, 2027, 2029, 2031];
-
-            // Calcular crescimento médio
-            let somaCrescimento = 0;
-            for (let i = 1; i < valores.length; i++) {
-                somaCrescimento += (valores[i] - valores[i - 1]);
-            }
-            const crescimentoMedio = somaCrescimento / (valores.length - 1);
-
-            const ultimoAno = anosBase[anosBase.length - 1];
-            const ultimoIDEB = valores[valores.length - 1];
-            const projecao = [];
-
-            // Dados históricos
-            for (let i = 0; i < anosBase.length; i++) {
-                projecao.push({ ano: anosBase[i], ideb: valores[i], historico: true });
-            }
-
-            // Projeção futura
-            let idebAtual = ultimoIDEB;
-            let anoAtual = ultimoAno;
-            for (let ano of anosProjetados) {
-                const intervalo = (ano - anoAtual) / 2; // bienal
-                idebAtual = parseFloat((idebAtual + crescimentoMedio * intervalo).toFixed(1));
-                projecao.push({ ano, ideb: Math.max(0, Math.min(10, idebAtual)), historico: false });
-                anoAtual = ano;
-            }
-
-            document.getElementById('loadingProjecao').style.display = 'block';
-            setTimeout(() => {
-                exibirProjecao(projecao);
-                document.getElementById('loadingProjecao').style.display = 'none';
-                document.getElementById('resultadoProjecao').style.display = 'block';
-            }, 800);
-        }
-
-        function exibirProjecao(dados) {
-            const tbody = document.getElementById('tabelaProjecao');
-            tbody.innerHTML = '';
-            dados.forEach(d => {
-                const nivel = (() => {
-                    if (d.ideb < 4.0) return '<span class="nivel-badge nivel-abaixo">Abaixo</span>';
-                    if (d.ideb < 6.0) return '<span class="nivel-badge nivel-basico">Básico</span>';
-                    if (d.ideb < 8.0) return '<span class="nivel-badge nivel-adequado">Adequado</span>';
-                    return '<span class="nivel-badge nivel-desejavel">Desejável</span>';
-                })();
-                const estilo = d.historico ? '' : 'style="font-weight: bold; background-color: #f9f9f9;"';
-                tbody.innerHTML += `
-                    <tr ${estilo}>
-                        <td>${d.ano}</td>
-                        <td>${d.ideb}</td>
-                        <td>${nivel}</td>
-                    </tr>
-                `;
-            });
-            criarGraficoProjecao(dados);
-        }
-
-        function criarGraficoProjecao(dados) {
-            const ctx = document.getElementById('graficoProjecao').getContext('2d');
-            if (window.graficoProjecao) window.graficoProjecao.destroy();
-            const anos = dados.map(d => d.ano);
-            const ideb = dados.map(d => d.ideb);
-            window.graficoProjecao = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: anos,
-                    datasets: [{
-                        label: 'IDEB (Histórico e Projeção)',
-                        data: ideb,
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        tension: 0.3,
-                        fill: false,
-                        pointBackgroundColor: dados.map(d => d.historico ? '#3498db' : '#27ae60')
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: { display: true, text: 'Projeção do IDEB até 2031' }
-                    }
-                }
-            });
-        }
-
-        // ABA 5: Calculadora Fluxo
         function calcularFluxo() {
-            const alunosInicio = parseInt(document.getElementById('alunosInicio').value);
-            const aprovados = parseInt(document.getElementById('alunosAprovados').value);
-            const reprovados = parseInt(document.getElementById('alunosReprovados').value);
-            const abandonaram = parseInt(document.getElementById('alunosAbandonaram').value);
-            const total = aprovados + reprovados + abandonaram;
-            if (total !== alunosInicio) {
-                alert(`Atenção: A soma dos alunos (${total}) não corresponde ao total inicial (${alunosInicio}). Verifique os dados.`);
+            const alunosInicio = parseInt(document.getElementById('alunosInicio').value) || 0;
+            const alunosAprovados = parseInt(document.getElementById('alunosAprovados').value) || 0;
+            const alunosReprovados = parseInt(document.getElementById('alunosReprovados').value) || 0;
+            const alunosAbandonaram = parseInt(document.getElementById('alunosAbandonaram').value) || 0;
+
+            if (alunosInicio === 0 || (alunosAprovados + alunosReprovados + alunosAbandonaram) > alunosInicio) {
+                alert('Verifique os números. O total de Aprovados + Reprovados + Abandonados não pode ser maior que o número inicial de alunos.');
                 return;
             }
-            const taxaAprovacao = ((aprovados / alunosInicio) * 100).toFixed(1);
-            const taxaReprovacao = ((reprovados / alunosInicio) * 100).toFixed(1);
-            const taxaAbandono = ((abandonaram / alunosInicio) * 100).toFixed(1);
-            document.getElementById('taxaAprovacao').textContent = taxaAprovacao + '%';
-            document.getElementById('taxaReprovacao').textContent = taxaReprovacao + '%';
-            document.getElementById('taxaAbandono').textContent = taxaAbandono + '%';
-            let analise = '<p>';
+
+            const taxaAprovacao = (alunosAprovados / alunosInicio) * 100;
+            const taxaReprovacao = (alunosReprovados / alunosInicio) * 100;
+            const taxaAbandono = (alunosAbandonaram / alunosInicio) * 100;
+
+            // Exibir resultados
+            document.getElementById('taxaAprovacao').textContent = taxaAprovacao.toFixed(1) + '%';
+            document.getElementById('taxaReprovacao').textContent = taxaReprovacao.toFixed(1) + '%';
+            document.getElementById('taxaAbandono').textContent = taxaAbandono.toFixed(1) + '%';
+
+            // Análise
+            let analise = `Com ${alunosInicio} alunos, a escola obteve: <br><br>`;
+            
             if (taxaAprovacao >= 90) {
-                analise += '✅ <strong>Excelente desempenho!</strong> A taxa de aprovação está muito boa.';
+                analise += `<strong>Taxa de Aprovação (${taxaAprovacao.toFixed(1)}%):</strong> Excelente! O fluxo escolar está muito saudável.`;
             } else if (taxaAprovacao >= 80) {
-                analise += '⚠️ <strong>Bom desempenho, mas pode melhorar.</strong> Foque na redução da reprovação.';
-            } else if (taxaAprovacao >= 70) {
-                analise += '📊 <strong>Desempenho regular.</strong> É necessário implementar ações de recuperação.';
+                analise += `<strong>Taxa de Aprovação (${taxaAprovacao.toFixed(1)}%):</strong> Boa. Mantenha os esforços para reduzir as perdas.`;
             } else {
-                analise += '❌ <strong>Desempenho crítico.</strong> Urgente implementar medidas para melhorar o fluxo.';
+                analise += `<strong>Taxa de Aprovação (${taxaAprovacao.toFixed(1)}%):</strong> Necessita atenção. Uma baixa aprovação pode impactar negativamente o IDEB.`;
             }
-            analise += '</p><p>';
-            if (taxaAbandono > 5) {
-                analise += `⚠️ <strong>Atenção ao abandono:</strong> ${taxaAbandono}% é uma taxa elevada. Investigue as causas.`;
+            
+            analise += '<br><br>';
+            
+            if (taxaReprovacao + taxaAbandono >= 10) {
+                analise += `<strong>Taxas de Perda:</strong> As taxas de Reprovação (${taxaReprovacao.toFixed(1)}%) e Abandono (${taxaAbandono.toFixed(1)}%) somam ${(taxaReprovacao + taxaAbandono).toFixed(1)}%. Isso indica que ${alunosReprovados + alunosAbandonaram} alunos não seguiram o fluxo esperado. Foco total em estratégias de recuperação e permanência.`;
             } else {
-                analise += '✅ <strong>Baixo abandono:</strong> Bom trabalho na permanência dos estudantes.';
+                 analise += `<strong>Taxas de Perda:</strong> As perdas por Reprovação e Abandono estão abaixo de 10%, o que é positivo e contribui para um bom Coeficiente de Rendimento no IDEB.`;
             }
-            analise += '</p>';
+            
             document.getElementById('analiseFluxo').innerHTML = analise;
             document.getElementById('resultadoFluxo').style.display = 'block';
         }
 
-        // ABA 7: Promoção Sem Titulação
+        // --- ABA 6: Projeção IDEB ---
+
+        function projetarIDEB() {
+            const historicoJSON = localStorage.getItem('historicoIDEBAtual');
+            if (!historicoJSON) {
+                alert('Primeiro, consulte o Histórico IDEB (Aba 2) com um código INEP válido para carregar os dados.');
+                return;
+            }
+
+            const historico = JSON.parse(historicoJSON);
+            const dadosIDEB = historico.map(d => d.ideb5ef);
+            const anosHistorico = historico.map(d => d.ano);
+
+            if (dadosIDEB.length < 2) {
+                alert('O histórico precisa de pelo menos dois anos de IDEB para fazer uma projeção.');
+                return;
+            }
+
+            document.getElementById('loadingProjecao').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('loadingProjecao').style.display = 'none';
+
+                // Cálculo da Média de Crescimento Bienal (Linear)
+                let somaCrescimentos = 0;
+                for (let i = 1; i < dadosIDEB.length; i++) {
+                    somaCrescimentos += dadosIDEB[i] - dadosIDEB[i-1];
+                }
+                const crescimentoMedioBienal = somaCrescimentos / (dadosIDEB.length - 1);
+                
+                // Geração da Projeção (até 2031, em passos de 2 anos)
+                const anoAtual = anosHistorico[anosHistorico.length - 1];
+                const idebAtual = dadosIDEB[dadosIDEB.length - 1];
+                
+                const projecao = [];
+                let proximoIdeb = idebAtual;
+                
+                for (let ano = anoAtual + 2; ano <= 2031; ano += 2) {
+                    proximoIdeb += crescimentoMedioBienal * 2; // Multiplica por 2 pois o IDEB é bienal
+                    projecao.push({ ano: ano, ideb: Math.min(proximoIdeb, 10) }); // Limita o IDEB a 10
+                }
+
+                // Preenchimento da Tabela e do Gráfico
+                const tbody = document.getElementById('tabelaProjecao');
+                tbody.innerHTML = '';
+                
+                const anosProjecao = [...anosHistorico];
+                const idebProjecao = [...dadosIDEB];
+
+                historico.forEach(dado => {
+                     tbody.innerHTML += `
+                        <tr>
+                            <td>${dado.ano}</td>
+                            <td>${dado.ideb5ef.toFixed(1)}</td>
+                            <td>${getNivelBadge(dado.ideb5ef)}</td>
+                            <td>Histórico</td>
+                        </tr>
+                    `;
+                });
+
+                projecao.forEach(p => {
+                    tbody.innerHTML += `
+                        <tr style="background-color: #e6f7ff;">
+                            <td>${p.ano}</td>
+                            <td>${p.ideb.toFixed(1)}</td>
+                            <td>${getNivelBadge(p.ideb)}</td>
+                            <td>Projetado</td>
+                        </tr>
+                    `;
+                    anosProjecao.push(p.ano);
+                    idebProjecao.push(p.ideb);
+                });
+
+
+                // Geração do Gráfico de Projeção
+                if (graficoProjecaoInstance) {
+                    graficoProjecaoInstance.destroy();
+                }
+
+                const ctx = document.getElementById('graficoProjecao').getContext('2d');
+                graficoProjecaoInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: anosProjecao,
+                        datasets: [
+                            {
+                                label: 'IDEB 5º Ano (Histórico e Projeção)',
+                                data: idebProjecao,
+                                borderColor: 'var(--secondary)',
+                                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                                fill: false,
+                                tension: 0.2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: 'IDEB'
+                                },
+                                min: 3.0,
+                                max: 7.0
+                            }
+                        }
+                    }
+                });
+
+                document.getElementById('resultadoProjecao').style.display = 'block';
+
+            }, 800);
+        }
+        
+        // --- ABA 7: Promoção Sem Titulação ---
+
         function calcularPontuacaoPromocao() {
-            const autoavaliacao = Math.min(20, Math.max(2, parseInt(document.getElementById('autoavaliacao').value) || 0));
-            const avaliacaoChefe = Math.min(20, Math.max(2, parseInt(document.getElementById('avaliacaoChefe').value) || 0));
-            const subjetivos = autoavaliacao + avaliacaoChefe;
-            const tempoServico = Math.min(25, parseInt(document.getElementById('tempoServico').value) || 0);
-            const experiencia = tempoServico * 0.8;
+            // Fatores Subjetivos (Máx. 40)
+            const autoavaliacao = parseInt(document.getElementById('autoavaliacao').value) || 0;
+            const avaliacaoChefe = parseInt(document.getElementById('avaliacaoChefe').value) || 0;
+            const detSubjetivos = Math.min(autoavaliacao, 20) + Math.min(avaliacaoChefe, 20);
+
+            // Experiência Profissional (Máx. 25)
+            const tempoServico = parseInt(document.getElementById('tempoServico').value) || 0;
+            // 2.5 pontos por ano (para 10 anos = 25 pontos)
+            const detExperiencia = Math.min(tempoServico * 2.5, 25);
+
+            // Capacitação 1 (Máx. 10)
             const cursos8_19 = parseInt(document.getElementById('cursos8_19').value) || 0;
             const cursos20_80 = parseInt(document.getElementById('cursos20_80').value) || 0;
             const cursos80Plus = parseInt(document.getElementById('cursos80Plus').value) || 0;
             const participacoes = parseInt(document.getElementById('participacoes').value) || 0;
-            const cap1 = Math.min(10, (cursos8_19 * 1) + (cursos20_80 * 2) + (cursos80Plus * 3) + (participacoes * 1));
+            // Cálculo: Cursos 8-19h (1p), Cursos 20-80h (2p), Cursos 80h+ (3p), Participações (1p)
+            let detCap1 = (cursos8_19 * 1) + (cursos20_80 * 2) + (cursos80Plus * 3) + (participacoes * 1);
+            detCap1 = Math.min(detCap1, 10);
+
+            // Capacitação 2 (Máx. 6)
             const apresentacoes = parseInt(document.getElementById('apresentacoes').value) || 0;
             const bancas = parseInt(document.getElementById('bancas').value) || 0;
             const elogios = parseInt(document.getElementById('elogios').value) || 0;
-            const cap2 = Math.min(6, (apresentacoes * 2) + (bancas * 2) + (elogios * 2));
+            // Cálculo: Apresentações (2p), Bancas (2p), Elogios (2p)
+            let detCap2 = (apresentacoes * 2) + (bancas * 2) + (elogios * 2);
+            detCap2 = Math.min(detCap2, 6);
+
+            // Capacitação 3 (Máx. 4)
             const posGraduacao = parseInt(document.getElementById('posGraduacao').value) || 0;
-            const cap3 = Math.min(4, posGraduacao * 4);
-            const resultadoEscolar = Math.min(20, Math.max(6, parseInt(document.getElementById('resultadoEscolar').value) || 0));
-            const total = subjetivos + experiencia + cap1 + cap2 + cap3 + resultadoEscolar;
-            document.getElementById('pontuacaoTotal').textContent = total.toFixed(1);
-            document.getElementById('detSubjetivos').textContent = `${subjetivos} pontos`;
-            document.getElementById('detExperiencia').textContent = `${experiencia.toFixed(1)} pontos`;
-            document.getElementById('detCap1').textContent = `${cap1} pontos`;
-            document.getElementById('detCap2').textContent = `${cap2} pontos`;
-            document.getElementById('detCap3').textContent = `${cap3} pontos`;
-            document.getElementById('detResultado').textContent = `${resultadoEscolar} pontos`;
+            // Cálculo: Pós-Graduação (4p)
+            let detCap3 = (posGraduacao * 4);
+            detCap3 = Math.min(detCap3, 4);
+
+            // Resultado Escolar (Máx. 20)
+            const resultadoEscolar = parseInt(document.getElementById('resultadoEscolar').value) || 0;
+            const detResultado = Math.min(Math.max(resultadoEscolar, 6), 20); // Valor entre 6 e 20
+
+            // SOMA TOTAL
+            const pontuacaoTotal = detSubjetivos + detExperiencia + detCap1 + detCap2 + detCap3 + detResultado;
+            
+            // Requisitos Mínimos (Regra de Exemplo: Mínimo de 60 pontos)
+            const pontuacaoMinima = 60;
+            const statusPromocao = pontuacaoTotal >= pontuacaoMinima;
+            
+            // Exibir Detalhes
+            document.getElementById('pontuacaoTotal').textContent = pontuacaoTotal;
+            document.getElementById('detSubjetivos').textContent = detSubjetivos + ' pontos';
+            document.getElementById('detExperiencia').textContent = detExperiencia.toFixed(1) + ' pontos';
+            document.getElementById('detCap1').textContent = detCap1 + ' pontos';
+            document.getElementById('detCap2').textContent = detCap2 + ' pontos';
+            document.getElementById('detCap3').textContent = detCap3 + ' pontos';
+            document.getElementById('detResultado').textContent = detResultado + ' pontos';
+
+            // Exibir Status
             const statusDiv = document.getElementById('statusPromocao');
-            if (total >= 80) {
-                statusDiv.innerHTML = '<h3 style="color: #27ae60;">🎉 Alta chance de promoção!</h3><p>Sua pontuação está excelente. Continue o bom trabalho!</p>';
-                statusDiv.style.background = '#e8f5e8';
-            } else if (total >= 60) {
-                statusDiv.innerHTML = '<h3 style="color: #f39c12;">👍 Boa chance de promoção</h3><p>Você está no caminho certo. Alguns ajustes podem melhorar sua pontuação.</p>';
-                statusDiv.style.background = '#fff4e6';
+            if (statusPromocao) {
+                statusDiv.className = 'success-status';
+                statusDiv.innerHTML = `<h3>🎉 PROMOÇÃO ASSEGURADA!</h3><p>Sua pontuação total (${pontuacaoTotal}) atinge o mínimo de ${pontuacaoMinima} pontos.</p>`;
             } else {
-                statusDiv.innerHTML = '<h3 style="color: #e74c3c;">📈 Precisa melhorar</h3><p>Foque nas áreas com menor pontuação para aumentar suas chances.</p>';
-                statusDiv.style.background = '#ffeaea';
+                statusDiv.className = 'fail-status';
+                statusDiv.innerHTML = `<h3>⚠️ PROMOÇÃO NÃO ASSEGURADA.</h3><p>Pontuação total: ${pontuacaoTotal}. Faltam ${pontuacaoMinima - pontuacaoTotal} pontos para atingir o mínimo de ${pontuacaoMinima}.</p>`;
             }
-            const recomendacoes = [];
-            if (subjetivos < 30) recomendacoes.push("Invista em melhorar sua autoavaliação e relação com o chefe imediato");
-            if (cap1 < 8) recomendacoes.push("Faça mais cursos de capacitação na área educacional");
-            if (cap2 < 4) recomendacoes.push("Participe de eventos científicos ou publique artigos");
-            if (cap3 === 0) recomendacoes.push("Considere concluir uma pós-graduação (4 pontos)");
-            if (resultadoEscolar < 15) recomendacoes.push("Trabalhe para melhorar os resultados escolares da sua unidade");
-            if (recomendacoes.length === 0) recomendacoes.push("Sua pontuação está excelente! Mantenha o bom trabalho!");
-            document.getElementById('recomendacoes').innerHTML = '<ul><li>' + recomendacoes.join('</li><li>') + '</li></ul>';
+
+            // Exibir Recomendações
+            let recomendacoes = '<ul style="padding-left: 20px; line-height: 1.6;">';
+            if (detSubjetivos < 30) {
+                recomendacoes += '<li>Foque em melhorar o desempenho nos <strong>Fatores Subjetivos</strong>. Busque *feedback* do chefe imediato para alinhar as expectativas de avaliação.</li>';
+            }
+            if (detExperiencia < 25) {
+                 recomendacoes += `<li>Seu tempo de serviço de ${tempoServico} anos gera ${detExperiencia.toFixed(1)} pontos. Continue na carreira para maximizar este fator até o limite de 25 pontos.</li>`;
+            }
+            if (detCap1 < 10 || detCap2 < 6) {
+                recomendacoes += '<li>Busque mais <strong>cursos de capacitação e eventos</strong> (acima de 80h) e apresente trabalhos em seminários para maximizar as pontuações de Capacitação.</li>';
+            }
+            if (detCap3 < 4) {
+                 recomendacoes += '<li>Considere iniciar uma <strong>Pós-Graduação</strong> (Lato Sensu ou Stricto Sensu) para obter a pontuação máxima no quesito Capacitação 3.</li>';
+            }
+            if (detResultado < 20) {
+                recomendacoes += '<li>Trabalhe para otimizar o <strong>Resultado Escolar</strong> da sua unidade, atingindo o máximo de 20 pontos.</li>';
+            }
+            if (recomendacoes === '<ul style="padding-left: 20px; line-height: 1.6;">') {
+                recomendacoes += '<li>Parabéns! Sua pontuação já é alta. Mantenha o foco nos resultados para sustentar a próxima promoção.</li>';
+            }
+            recomendacoes += '</ul>';
+            document.getElementById('recomendacoes').innerHTML = recomendacoes;
+
             document.getElementById('resultadoPromocao').style.display = 'block';
         }
     </script>
