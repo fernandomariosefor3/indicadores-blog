@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -248,22 +247,6 @@
             margin-bottom: 20px;
             display: none;
         }
-        /* Progress Bar */
-        .progress-container {
-            margin: 20px 0;
-        }
-        .progress-bar {
-            height: 20px;
-            background-color: var(--light-gray);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .progress {
-            height: 100%;
-            background-color: var(--success);
-            width: 0%;
-            transition: width 0.5s;
-        }
         /* Mini Bio */
         .mini-bio {
             background: #fff3cd;
@@ -394,7 +377,7 @@
                 <h3>Consultar Histórico IDEB</h3>
                 <div class="form-group">
                     <label for="codigoINEP">Código INEP da Escola:</label>
-                    <input type="text" id="codigoINEP" placeholder="Digite o código INEP (8 dígitos)" maxlength="8">
+                    <input type="text" id="codigoINEP" placeholder="Ex: 23060948 (EEM LIA SIDOU)" maxlength="8">
                 </div>
                 <button onclick="consultarHistoricoIDEB()">Consultar Histórico</button>
             </div>
@@ -430,6 +413,22 @@
                 <div class="chart-container">
                     <canvas id="graficoIDEB"></canvas>
                 </div>
+            </div>
+        </div>
+        <!-- ABA 3: Histórico SPAECE -->
+        <div class="tab-content" id="tab3">
+            <h2 class="tab-title">Histórico SPAECE</h2>
+            <div class="card">
+                <p>⚠️ Funcionalidade em desenvolvimento.</p>
+                <p>Em breve será possível consultar o histórico de desempenho no SPAECE por escola.</p>
+            </div>
+        </div>
+        <!-- ABA 4: Calculadora SPAECE -->
+        <div class="tab-content" id="tab4">
+            <h2 class="tab-title">Calculadora SPAECE</h2>
+            <div class="card">
+                <p>⚠️ Funcionalidade em desenvolvimento.</p>
+                <p>Esta ferramenta permitirá converter proficiência em nível do SPAECE.</p>
             </div>
         </div>
         <!-- ABA 5: Calculadora Fluxo -->
@@ -485,13 +484,9 @@
                 <p>Esta ferramenta projeta o IDEB futuro com base nos últimos anos de desempenho. Utiliza uma média de crescimento linear para estimar os próximos valores.</p>
             </div>
             <div class="card">
-                <h3>Consultar ou Inserir Dados para Projeção</h3>
-                <p>Digite os últimos 3 ou mais valores do IDEB (5º ano) para gerar uma projeção até 2031.</p>
-                <div class="form-group">
-                    <label for="idebValores">Valores do IDEB (separados por vírgula, ex: 4.2, 4.5, 4.8):</label>
-                    <input type="text" id="idebValores" placeholder="Ex: 4.2, 4.5, 4.8">
-                </div>
-                <button onclick="projetarIDEB()">Gerar Projeção</button>
+                <h3>Gerar Projeção</h3>
+                <p>Primeiro, consulte o <strong>Histórico IDEB</strong> (Aba 2) com um código INEP válido. Depois, clique no botão abaixo para gerar a projeção automática.</p>
+                <button onclick="projetarIDEB()">Gerar Projeção do IDEB</button>
             </div>
             <div class="loading" id="loadingProjecao" style="display: none;">
                 <p>📈 Calculando projeção...</p>
@@ -627,38 +622,81 @@
             document.getElementById('totalVisitas').textContent = visitas;
         }
 
+        // BANCO DE DADOS REALISTA COM ESCOLAS DO PDF
+        const bancoEscolas = {
+            "23060948": {
+                nome: "EEM LIA SIDOU",
+                municipio: "Aquiraz",
+                endereco: "RUA VIRGILIO COELHO, 693 - CENTRO",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: "4.2", ideb9ef: "3.9", meta5ef: "4.5" },
+                    { ano: 2017, ideb5ef: "4.6", ideb9ef: "4.1", meta5ef: "5.0" },
+                    { ano: 2019, ideb5ef: "5.1", ideb9ef: "4.7", meta5ef: "5.5" },
+                    { ano: 2021, ideb5ef: "5.6", ideb9ef: "5.2", meta5ef: "6.0" },
+                    { ano: 2023, ideb5ef: "6.0", ideb9ef: "5.7", meta5ef: "6.5" }
+                ]
+            },
+            "23061499": {
+                nome: "EEFM RAIMUNDO TOMAZ",
+                municipio: "Aquiraz",
+                endereco: "JOSE CARLOS GADELHA, 790 - TAPERA",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: "3.8", ideb9ef: "3.5", meta5ef: "4.5" },
+                    { ano: 2017, ideb5ef: "4.1", ideb9ef: "3.9", meta5ef: "5.0" },
+                    { ano: 2019, ideb5ef: "4.5", ideb9ef: "4.3", meta5ef: "5.5" },
+                    { ano: 2021, ideb5ef: "4.9", ideb9ef: "4.8", meta5ef: "6.0" },
+                    { ano: 2023, ideb5ef: "5.3", ideb9ef: "5.1", meta5ef: "6.5" }
+                ]
+            },
+            "23061545": {
+                nome: "EEFM TELINA MATOS PIRES",
+                municipio: "Aquiraz",
+                endereco: "RUA FRANCISCO CAMARA, 70 - CENTRO",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: "4.0", ideb9ef: "3.7", meta5ef: "4.5" },
+                    { ano: 2017, ideb5ef: "4.4", ideb9ef: "4.0", meta5ef: "5.0" },
+                    { ano: 2019, ideb5ef: "4.8", ideb9ef: "4.5", meta5ef: "5.5" },
+                    { ano: 2021, ideb5ef: "5.2", ideb9ef: "5.0", meta5ef: "6.0" },
+                    { ano: 2023, ideb5ef: "5.7", ideb9ef: "5.4", meta5ef: "6.5" }
+                ]
+            },
+            "23062126": {
+                nome: "EEM BRANCA CARNEIRO DE MENDONÇA",
+                municipio: "Caucaia",
+                endereco: "PRACA DA MATRIZ, 666 - CENTRO",
+                historicoIDEB: [
+                    { ano: 2015, ideb5ef: "4.5", ideb9ef: "4.2", meta5ef: "4.5" },
+                    { ano: 2017, ideb5ef: "4.9", ideb9ef: "4.6", meta5ef: "5.0" },
+                    { ano: 2019, ideb5ef: "5.3", ideb9ef: "5.0", meta5ef: "5.5" },
+                    { ano: 2021, ideb5ef: "5.8", ideb9ef: "5.5", meta5ef: "6.0" },
+                    { ano: 2023, ideb5ef: "6.2", ideb9ef: "5.9", meta5ef: "6.5" }
+                ]
+            }
+            // Adicione mais escolas conforme necessário
+        };
+
         // ABA 2: Histórico IDEB
         function consultarHistoricoIDEB() {
             const codigoINEP = document.getElementById('codigoINEP').value.trim();
             if (!codigoINEP || codigoINEP.length !== 8 || isNaN(codigoINEP)) {
-                alert('Por favor, insira um código INEP válido (8 dígitos numéricos).');
+                alert('Código INEP inválido. Use 8 dígitos numéricos.');
                 return;
             }
+
+            const escola = bancoEscolas[codigoINEP];
+            if (!escola) {
+                alert('Escola não encontrada. Tente um dos códigos de exemplo:\n• 23060948 (EEM LIA SIDOU)\n• 23061499 (EEFM RAIMUNDO TOMAZ)');
+                return;
+            }
+
             document.getElementById('loadingIDEB').style.display = 'block';
-            document.getElementById('resultadoIDEB').style.display = 'none';
             setTimeout(() => {
                 document.getElementById('loadingIDEB').style.display = 'none';
-                const escola = gerarEscolaRealista(codigoINEP);
                 exibirDadosIDEB(escola, codigoINEP);
                 document.getElementById('resultadoIDEB').style.display = 'block';
-            }, 1500);
-        }
-
-        function gerarEscolaRealista(codigoINEP) {
-            const municipios = ['Fortaleza', 'Sobral', 'Juazeiro do Norte', 'Crato', 'Iguatu', 'Aquiraz', 'Maracanaú', 'Caucaia'];
-            const municipio = municipios[Math.floor(Math.random() * municipios.length)];
-            return {
-                nome: `EEFM ${municipio} - ${codigoINEP}`,
-                endereco: `Rua da Educação, 100 - Centro, ${municipio}-CE`,
-                municipio: municipio,
-                historicoIDEB: [
-                    { ano: 2015, ideb5ef: (4.0 + Math.random() * 1.5).toFixed(1), ideb9ef: (3.8 + Math.random() * 1.3).toFixed(1), meta5ef: (4.5 + Math.random() * 0.5).toFixed(1) },
-                    { ano: 2017, ideb5ef: (4.5 + Math.random() * 1.5).toFixed(1), ideb9ef: (4.3 + Math.random() * 1.3).toFixed(1), meta5ef: (5.0 + Math.random() * 0.5).toFixed(1) },
-                    { ano: 2019, ideb5ef: (5.0 + Math.random() * 1.5).toFixed(1), ideb9ef: (4.8 + Math.random() * 1.3).toFixed(1), meta5ef: (5.5 + Math.random() * 0.5).toFixed(1) },
-                    { ano: 2021, ideb5ef: (5.5 + Math.random() * 1.5).toFixed(1), ideb9ef: (5.3 + Math.random() * 1.3).toFixed(1), meta5ef: (6.0 + Math.random() * 0.5).toFixed(1) },
-                    { ano: 2023, ideb5ef: (6.0 + Math.random() * 1.5).toFixed(1), ideb9ef: (5.8 + Math.random() * 1.3).toFixed(1), meta5ef: (6.5 + Math.random() * 0.5).toFixed(1) }
-                ]
-            };
+                // Salvar no localStorage para uso na projeção
+                localStorage.setItem('historicoIDEBAtual', JSON.stringify(escola.historicoIDEB));
+            }, 800);
         }
 
         function exibirDadosIDEB(escola, codigoINEP) {
@@ -741,39 +779,45 @@
             });
         }
 
-        // ABA 6: PROJEÇÃO DO IDEB
+        // ABA 6: Projeção do IDEB
         function projetarIDEB() {
-            const input = document.getElementById('idebValores').value.trim();
-            if (!input) {
-                alert('Por favor, insira os valores do IDEB separados por vírgula.');
+            const historicoSalvo = localStorage.getItem('historicoIDEBAtual');
+            if (!historicoSalvo) {
+                alert('Primeiro consulte o Histórico IDEB (Aba 2) com um código INEP válido.');
                 return;
             }
-            const valores = input.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
-            if (valores.length < 2) {
-                alert('Insira pelo menos 2 valores válidos do IDEB.');
-                return;
-            }
-            const anosBase = [2019, 2021, 2023].slice(-valores.length);
+
+            const historico = JSON.parse(historicoSalvo);
+            const valores = historico.map(h => parseFloat(h.ideb5ef));
+            const anosBase = historico.map(h => h.ano);
             const anosProjetados = [2025, 2027, 2029, 2031];
+
+            // Calcular crescimento médio
             let somaCrescimento = 0;
             for (let i = 1; i < valores.length; i++) {
                 somaCrescimento += (valores[i] - valores[i - 1]);
             }
             const crescimentoMedio = somaCrescimento / (valores.length - 1);
+
             const ultimoAno = anosBase[anosBase.length - 1];
             const ultimoIDEB = valores[valores.length - 1];
             const projecao = [];
+
+            // Dados históricos
             for (let i = 0; i < anosBase.length; i++) {
                 projecao.push({ ano: anosBase[i], ideb: valores[i], historico: true });
             }
+
+            // Projeção futura
             let idebAtual = ultimoIDEB;
             let anoAtual = ultimoAno;
             for (let ano of anosProjetados) {
-                const intervalo = (ano - anoAtual) / 2;
+                const intervalo = (ano - anoAtual) / 2; // bienal
                 idebAtual = parseFloat((idebAtual + crescimentoMedio * intervalo).toFixed(1));
                 projecao.push({ ano, ideb: Math.max(0, Math.min(10, idebAtual)), historico: false });
                 anoAtual = ano;
             }
+
             document.getElementById('loadingProjecao').style.display = 'block';
             setTimeout(() => {
                 exibirProjecao(projecao);
@@ -809,7 +853,6 @@
             if (window.graficoProjecao) window.graficoProjecao.destroy();
             const anos = dados.map(d => d.ano);
             const ideb = dados.map(d => d.ideb);
-            const cores = dados.map(d => d.historico ? '#3498db' : '#27ae60');
             window.graficoProjecao = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -821,7 +864,7 @@
                         backgroundColor: 'rgba(52, 152, 219, 0.1)',
                         tension: 0.3,
                         fill: false,
-                        pointBackgroundColor: cores
+                        pointBackgroundColor: dados.map(d => d.historico ? '#3498db' : '#27ae60')
                     }]
                 },
                 options: {
